@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	addition "github.com/valentinusdelvin/velo-mom-api/addition/timeconvert"
 	"github.com/valentinusdelvin/velo-mom-api/entity"
 	"github.com/valentinusdelvin/velo-mom-api/internal/repository"
 	"github.com/valentinusdelvin/velo-mom-api/models"
@@ -41,7 +42,7 @@ func (a *ArticleUsecase) CreateArticle(param models.CreateArticle) error {
 		Content:   param.Content,
 		Author:    param.Author,
 		ImageURL:  param.ImageURL,
-		CreatedAt: time.Now(),
+		CreatedAt: addition.TimeConvert(time.Now()),
 	}
 
 	_, err := a.arsc.CreateArticle(articlePost)

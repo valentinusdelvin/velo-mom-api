@@ -1,8 +1,6 @@
 package entity
 
 import (
-	"time"
-
 	"github.com/google/uuid"
 )
 
@@ -11,6 +9,6 @@ type Article struct {
 	Title     string    `json:"title" gorm:"not null"`
 	Content   string    `json:"content" gorm:"not null"`
 	Author    string    `json:"author" gorm:"not null"`
-	CreatedAt time.Time `json:"createdAt" gorm:"autoCreateTime"`
+	CreatedAt string    `json:"createdAt"`
 	ImageURL  string    `json:"imageURL"`
 }

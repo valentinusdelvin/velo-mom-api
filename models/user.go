@@ -12,8 +12,8 @@ type UserRegister struct {
 }
 
 type UserLogin struct {
-	DisplayName string `json:"displayName" binding:"required"`
-	Password    string `json:"password" binding:"required"`
+	Email    string `json:"email" binding:"required"`
+	Password string `json:"password" binding:"required"`
 }
 
 type UserLoginResponse struct {

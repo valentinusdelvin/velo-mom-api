@@ -1,8 +1,6 @@
 package models
 
 import (
-	"time"
-
 	"github.com/google/uuid"
 )
 
@@ -12,5 +10,5 @@ type CreateArticle struct {
 	Content   string    `json:"content" binding:"required,min=10"`
 	Author    string    `json:"author" binding:"required,min=1"`
 	ImageURL  string    `json:"imageURL"`
-	CreatedAt time.Time `json:"createdAt"`
+	CreatedAt string    `json:"createdAt"`
 }

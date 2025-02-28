@@ -58,7 +58,7 @@ func (u *UserUsecase) Login(param models.UserLogin) (models.UserLoginResponse, e
 	result := models.UserLoginResponse{}
 
 	user, err := u.ursc.GetUser(models.UserParam{
-		DisplayName: param.DisplayName,
+		Email: param.Email,
 	})
 	if err != nil {
 		return result, err
