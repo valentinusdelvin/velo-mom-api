@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"github.com/google/uuid"
 	"github.com/valentinusdelvin/velo-mom-api/addition/bcrypt"
 	"github.com/valentinusdelvin/velo-mom-api/addition/jwt"
 	"github.com/valentinusdelvin/velo-mom-api/entity"
@@ -11,6 +12,8 @@ import (
 type InterUserUsecase interface {
 	Register(req models.UserRegister) error
 	Login(req models.UserLogin) (models.UserLoginResponse, error)
+	GetUser(param models.UserParam) (entity.User, error)
+	UpdateUser(param models.UserUpdate, user entity.User) error
 }
 
 type UserUsecase struct {
@@ -33,11 +36,14 @@ func (u *UserUsecase) Register(param models.UserRegister) error {
 		return err
 	}
 
+	param.ID = uuid.New()
+	param.Password = hashedPassword
+
 	user := entity.User{
-		ID:       param.ID,
-		Username: param.Username,
-		Password: hashedPassword,
-		Email:    param.Email,
+		ID:          param.ID,
+		DisplayName: param.DisplayName,
+		Password:    hashedPassword,
+		Email:       param.Email,
 	}
 
 	_, err = u.ursc.CreateUser(user)
@@ -52,7 +58,7 @@ func (u *UserUsecase) Login(param models.UserLogin) (models.UserLoginResponse, e
 	result := models.UserLoginResponse{}
 
 	user, err := u.ursc.GetUser(models.UserParam{
-		Username: param.Username,
+		DisplayName: param.DisplayName,
 	})
 	if err != nil {
 		return result, err
@@ -71,4 +77,17 @@ func (u *UserUsecase) Login(param models.UserLogin) (models.UserLoginResponse, e
 	result.Token = token
 
 	return result, nil
+}
+
+func (u *UserUsecase) GetUser(param models.UserParam) (entity.User, error) {
+	return u.ursc.GetUser(param)
+}
+
+func (u *UserUsecase) UpdateUser(param models.UserUpdate, user entity.User) error {
+	err := u.ursc.UpdateUser(param, user)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

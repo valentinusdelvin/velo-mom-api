@@ -5,15 +5,15 @@ import (
 )
 
 type UserRegister struct {
-	ID       uuid.UUID `json:"-"`
-	Username string    `json:"username" binding:"required"`
-	Email    string    `json:"email" binding:"required"`
-	Password string    `json:"password" binding:"required,min=6"`
+	ID          uuid.UUID `json:"-"`
+	DisplayName string    `json:"displayName" binding:"required"`
+	Email       string    `json:"email" binding:"required"`
+	Password    string    `json:"password" binding:"required,min=6"`
 }
 
 type UserLogin struct {
-	Username string `json:"username" binding:"required"`
-	Password string `json:"password" binding:"required"`
+	DisplayName string `json:"displayName" binding:"required"`
+	Password    string `json:"password" binding:"required"`
 }
 
 type UserLoginResponse struct {
@@ -21,7 +21,17 @@ type UserLoginResponse struct {
 }
 
 type UserParam struct {
-	ID       uuid.UUID `json:"-"`
-	Username string    `json:"-"`
-	Email    string    `json:"-"`
+	ID          uuid.UUID `json:"-"`
+	DisplayName string    `json:"-"`
+	Email       string    `json:"-"`
+}
+
+type EmailAuthenticator struct {
+	Email string
+}
+
+type UserUpdate struct {
+	DisplayName string `json:"displayName"`
+	PhoneNumber string `json:"phoneNumber"`
+	Bio         string `json:"bio"`
 }

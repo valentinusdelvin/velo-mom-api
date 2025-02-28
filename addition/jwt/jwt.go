@@ -33,7 +33,7 @@ func NewJWT() InterJWT {
 	secretKey := os.Getenv("JWT_SEC_KEY")
 	expiredTime, err := strconv.Atoi(os.Getenv("JWT_EXP_TIME"))
 	if err != nil {
-		log.Panicf("Failed to set expired time for token: %v", err.Error())
+		log.Fatalf("Failed to set expired time for token: %v", err.Error())
 	}
 
 	return &JWTService{
