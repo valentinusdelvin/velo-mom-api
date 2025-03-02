@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/valentinusdelvin/velo-mom-api/addition/middleware"
 	"github.com/valentinusdelvin/velo-mom-api/internal/usecase"
+	"github.com/valentinusdelvin/velo-mom-api/utils/middleware"
 )
 
 type Rest struct {
@@ -33,7 +33,9 @@ func (r *Rest) FinalCheck() {
 	routerGroup.PATCH("/update-user", r.middleware.Authenticate, r.UpdateUser)
 
 	articlepost := routerGroup.Group("/article")
-	articlepost.POST("/create", r.middleware.Authenticate, r.CreateArticle)
+	articlepost.POST("/", r.middleware.Authenticate, r.CreateArticle)
+	articlepost.GET("/", r.GetArticles)
+	articlepost.GET("/:id", r.GetArticleByID)
 }
 
 func (r *Rest) Run() {

@@ -4,13 +4,13 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
-	"github.com/valentinusdelvin/velo-mom-api/addition/bcrypt"
-	"github.com/valentinusdelvin/velo-mom-api/addition/jwt"
-	"github.com/valentinusdelvin/velo-mom-api/addition/middleware"
 	"github.com/valentinusdelvin/velo-mom-api/initializers"
 	"github.com/valentinusdelvin/velo-mom-api/internal/repository"
 	"github.com/valentinusdelvin/velo-mom-api/internal/rest"
 	"github.com/valentinusdelvin/velo-mom-api/internal/usecase"
+	"github.com/valentinusdelvin/velo-mom-api/utils/bcrypt"
+	"github.com/valentinusdelvin/velo-mom-api/utils/jwt"
+	"github.com/valentinusdelvin/velo-mom-api/utils/middleware"
 )
 
 func init() {

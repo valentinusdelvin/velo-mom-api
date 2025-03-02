@@ -3,9 +3,9 @@ package entity
 import "time"
 
 type Video struct {
-	ID          string    `json:"id" gorm:"primaryKey"`
-	Tittle      string    `json:"tittle" gorm:"not null"`
-	Link        string    `json:"link" gorm:"not null"`
-	Description string    `json:"description" gorm:"not null"`
-	CreatedAt   time.Time `json:"createdAt" gorm:"autoCreateTime"`
+	ID          string    `gorm:"primaryKey"`
+	Tittle      string    `gorm:"not null"`
+	Link        string    `gorm:"not null"`
+	Description string    `gorm:"not null"`
+	CreatedAt   time.Time `gorm:"autoCreateTime"`
 }

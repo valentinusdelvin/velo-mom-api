@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/valentinusdelvin/velo-mom-api/models"
 )
 
 func (m *Middleware) Authenticate(c *gin.Context) {
@@ -28,18 +27,7 @@ func (m *Middleware) Authenticate(c *gin.Context) {
 		return
 	}
 
-	user, err := m.usecase.UserUsecase.GetUser(models.UserParam{
-		ID: userId,
-	})
-	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"error": "user not found",
-		})
-		c.Abort()
-		return
-	}
-
-	c.Set("user", user)
+	c.Set("user", userId)
 
 	c.Next()
 }

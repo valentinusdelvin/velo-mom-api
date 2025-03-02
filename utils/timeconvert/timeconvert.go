@@ -10,7 +10,7 @@ type TimeConvertInterface interface {
 }
 
 func TimeConvert(t time.Time) string {
-	hariIndonesia := map[string]string{
+	indonesianDay := map[string]string{
 		"Sunday":    "Minggu",
 		"Monday":    "Senin",
 		"Tuesday":   "Selasa",
@@ -20,7 +20,7 @@ func TimeConvert(t time.Time) string {
 		"Saturday":  "Sabtu",
 	}
 
-	bulanIndonesia := map[string]string{
+	indonesianMonth := map[string]string{
 		"January":   "Januari",
 		"February":  "Februari",
 		"March":     "Maret",
@@ -35,8 +35,8 @@ func TimeConvert(t time.Time) string {
 		"December":  "Desember",
 	}
 
-	hari := t.Weekday().String()
-	bulan := t.Month().String()
+	day := t.Weekday().String()
+	month := t.Month().String()
 
-	return fmt.Sprintf("%s, %02d %s %d", hariIndonesia[hari], t.Day(), bulanIndonesia[bulan], t.Year())
+	return fmt.Sprintf("%s, %02d %s %d", indonesianDay[day], t.Day(), indonesianMonth[month], t.Year())
 }

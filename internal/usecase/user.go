@@ -2,11 +2,11 @@ package usecase
 
 import (
 	"github.com/google/uuid"
-	"github.com/valentinusdelvin/velo-mom-api/addition/bcrypt"
-	"github.com/valentinusdelvin/velo-mom-api/addition/jwt"
 	"github.com/valentinusdelvin/velo-mom-api/entity"
 	"github.com/valentinusdelvin/velo-mom-api/internal/repository"
 	"github.com/valentinusdelvin/velo-mom-api/models"
+	"github.com/valentinusdelvin/velo-mom-api/utils/bcrypt"
+	"github.com/valentinusdelvin/velo-mom-api/utils/jwt"
 )
 
 type InterUserUsecase interface {
