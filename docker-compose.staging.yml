@@ -1,6 +1,8 @@
 services:
   velo-mom-api:
     image: kmdavidds/velo-mom-api:latest
+    ports:
+      - "3014:8080"
     networks:
       - postgres_network
     labels:
