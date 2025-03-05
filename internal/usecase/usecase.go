@@ -9,6 +9,8 @@ import (
 type Usecase struct {
 	UserUsecase    InterUserUsecase
 	ArticleUsecase InterArticleUsecase
+	VideoUsecase   InterVideoUsecase
+	JournalUsecase InterJournalUsecase
 }
 
 type InitializersParam struct {
@@ -20,9 +22,13 @@ type InitializersParam struct {
 func NewUsecase(param InitializersParam) *Usecase {
 	UserUsecase := NewUserUsecase(param.Repository.UserRepository, *param.Bcrypt, *param.JWT)
 	ArticleUsecase := NewArticleUsecase(param.Repository.ArticleRepository)
+	VideoUsecase := NewVideoUsecase(param.Repository.VideoRepository)
+	JournalUsecase := NewJournalUsecase(param.Repository.JournalRepository)
 
 	return &Usecase{
 		UserUsecase:    UserUsecase,
 		ArticleUsecase: ArticleUsecase,
+		VideoUsecase:   VideoUsecase,
+		JournalUsecase: JournalUsecase,
 	}
 }

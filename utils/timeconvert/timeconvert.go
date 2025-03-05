@@ -1,4 +1,4 @@
-package addition
+package timeconvert
 
 import (
 	"fmt"

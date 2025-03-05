@@ -32,10 +32,20 @@ func (r *Rest) FinalCheck() {
 	routerGroup.POST("/auth-email", r.middleware.Authenticate, r.AuthenticateEmail)
 	routerGroup.PATCH("/update-user", r.middleware.Authenticate, r.UpdateUser)
 
-	articlepost := routerGroup.Group("/article")
+	articlepost := routerGroup.Group("/articles")
 	articlepost.POST("/", r.middleware.Authenticate, r.CreateArticle)
 	articlepost.GET("/", r.GetArticles)
 	articlepost.GET("/:id", r.GetArticleByID)
+
+	videopost := routerGroup.Group("/videos")
+	videopost.POST("/", r.middleware.Authenticate, r.CreateVideo)
+	videopost.GET("/", r.GetVideos)
+	videopost.GET("/:id", r.GetVideoByID)
+
+	journalpost := routerGroup.Group("/journals")
+	journalpost.POST("/", r.middleware.Authenticate, r.CreateJournal)
+	journalpost.GET("/me", r.middleware.Authenticate, r.GetUserJournals)
+	journalpost.GET("/me/:id", r.middleware.Authenticate, r.GetUserJournalByID)
 }
 
 func (r *Rest) Run() {

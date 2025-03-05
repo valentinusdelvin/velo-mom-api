@@ -42,10 +42,7 @@ func (r *Rest) GetArticles(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": "success to get articles",
-		"data":    articles,
-	})
+	ctx.JSON(http.StatusOK, articles)
 }
 
 func (r *Rest) GetArticleByID(ctx *gin.Context) {
@@ -60,8 +57,5 @@ func (r *Rest) GetArticleByID(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": "success to get article",
-		"data":    article,
-	})
+	ctx.JSON(http.StatusOK, article)
 }

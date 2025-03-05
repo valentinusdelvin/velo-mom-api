@@ -38,8 +38,7 @@ func (r *Rest) Register(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": "success to register user"})
+	ctx.JSON(http.StatusOK, gin.H{})
 }
 
 func (r *Rest) Login(ctx *gin.Context) {

@@ -34,6 +34,7 @@ func main() {
 	rest := rest.NewRest(usecase, middleware)
 	rest.FinalCheck()
 
+	//Janlup Buat apus ini tiap Jumat
 	r := gin.Default()
 	for _, route := range r.Routes() {
 		fmt.Println(route.Method, route.Path)
