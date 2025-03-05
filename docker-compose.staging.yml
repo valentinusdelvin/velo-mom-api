@@ -1,0 +1,17 @@
+services:
+  velo-mom-api:
+    image: kmdavidds/velo-mom-api:latest
+    networks:
+      - postgres_network
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    env_file: ".env"
+  watchtower:
+    image: containrrr/watchtower
+    command:
+      - "--label-enable"
+      - "--interval"
+      - "300"
+      - "--rolling-restart"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
