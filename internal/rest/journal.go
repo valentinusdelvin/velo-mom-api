@@ -20,7 +20,7 @@ func (r *Rest) CreateJournal(ctx *gin.Context) {
 		return
 	}
 
-	user, ok := ctx.Get("user")
+	user, ok := ctx.Get("userID")
 	if !ok {
 		ctx.JSON(http.StatusUnauthorized, gin.H{
 			"error": "Failed to get login user",
@@ -44,7 +44,7 @@ func (r *Rest) CreateJournal(ctx *gin.Context) {
 }
 
 func (r *Rest) GetUserJournals(ctx *gin.Context) {
-	user, authorized := ctx.Get("user")
+	user, authorized := ctx.Get("userID")
 	if !authorized {
 		ctx.JSON(http.StatusUnauthorized, gin.H{
 			"error": "Unauthorized",
