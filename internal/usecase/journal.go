@@ -7,7 +7,7 @@ import (
 	"github.com/valentinusdelvin/velo-mom-api/entity"
 	"github.com/valentinusdelvin/velo-mom-api/internal/repository"
 	"github.com/valentinusdelvin/velo-mom-api/models"
-	addition "github.com/valentinusdelvin/velo-mom-api/utils/timeconvert"
+	addition "github.com/valentinusdelvin/velo-mom-api/pkg/timeconvert"
 )
 
 type InterJournalUsecase interface {

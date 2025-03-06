@@ -2,9 +2,9 @@ package usecase
 
 import (
 	"github.com/valentinusdelvin/velo-mom-api/internal/repository"
-	"github.com/valentinusdelvin/velo-mom-api/utils/bcrypt"
-	"github.com/valentinusdelvin/velo-mom-api/utils/jwt"
-	"github.com/valentinusdelvin/velo-mom-api/utils/supabase"
+	"github.com/valentinusdelvin/velo-mom-api/pkg/bcrypt"
+	"github.com/valentinusdelvin/velo-mom-api/pkg/jwt"
+	"github.com/valentinusdelvin/velo-mom-api/pkg/supabase"
 )
 
 type Usecase struct {

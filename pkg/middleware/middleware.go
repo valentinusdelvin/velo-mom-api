@@ -3,7 +3,7 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/valentinusdelvin/velo-mom-api/internal/usecase"
-	"github.com/valentinusdelvin/velo-mom-api/utils/jwt"
+	"github.com/valentinusdelvin/velo-mom-api/pkg/jwt"
 )
 
 type Interface interface {

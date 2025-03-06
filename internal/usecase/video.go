@@ -4,7 +4,7 @@ import (
 	"github.com/valentinusdelvin/velo-mom-api/entity"
 	"github.com/valentinusdelvin/velo-mom-api/internal/repository"
 	"github.com/valentinusdelvin/velo-mom-api/models"
-	"github.com/valentinusdelvin/velo-mom-api/utils/video"
+	"github.com/valentinusdelvin/velo-mom-api/pkg/video"
 )
 
 type InterVideoUsecase interface {

@@ -10,8 +10,8 @@ import (
 	"github.com/valentinusdelvin/velo-mom-api/entity"
 	"github.com/valentinusdelvin/velo-mom-api/internal/repository"
 	"github.com/valentinusdelvin/velo-mom-api/models"
-	"github.com/valentinusdelvin/velo-mom-api/utils/supabase"
-	addition "github.com/valentinusdelvin/velo-mom-api/utils/timeconvert"
+	"github.com/valentinusdelvin/velo-mom-api/pkg/supabase"
+	addition "github.com/valentinusdelvin/velo-mom-api/pkg/timeconvert"
 )
 
 type InterArticleUsecase interface {
