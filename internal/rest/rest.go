@@ -31,6 +31,7 @@ func (r *Rest) FinalCheck() {
 	routerGroup.GET("/login-user", r.middleware.Authenticate, getLoginUser)
 	routerGroup.POST("/auth-email", r.middleware.Authenticate, r.AuthenticateEmail)
 	routerGroup.PATCH("/update-user", r.middleware.Authenticate, r.UpdateUser)
+	routerGroup.PATCH("/update-photo", r.middleware.Authenticate, r.UpdateProfilePhoto)
 
 	articlepost := routerGroup.Group("/articles")
 	articlepost.POST("/", r.middleware.Authenticate, r.CreateArticle)

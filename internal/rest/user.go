@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	"github.com/valentinusdelvin/velo-mom-api/entity"
 	"github.com/valentinusdelvin/velo-mom-api/models"
 	"gorm.io/gorm"
@@ -139,6 +140,52 @@ func (r *Rest) UpdateUser(ctx *gin.Context) {
 			ctx.JSON(http.StatusInternalServerError, gin.H{
 				"message": "failed to update user",
 				"error":   err,
+			})
+		}
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{})
+}
+
+func (r *Rest) UpdateProfilePhoto(ctx *gin.Context) {
+	param := models.UpdateProfilePhoto{}
+
+	err := ctx.ShouldBindWith(&param, binding.FormMultipart)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"message": "failed to bind request body",
+			"error":   err,
+		})
+		return
+	}
+
+	user, ok := ctx.Get("user")
+	if !ok {
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"message": "failed to get user",
+		})
+		return
+	}
+
+	param.ID = user.(entity.User).ID
+	param.PhotoLink = user.(entity.User).PhotoLink
+
+	err = r.usecase.UserUsecase.UpdateProfilePhoto(param, user.(entity.User))
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ctx.JSON(http.StatusNotFound, gin.H{
+				"message": "user not found",
+				"error":   err.Error(),
+			})
+		} else if errors.Is(err, gorm.ErrInvalidData) {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"message": "failed to update user",
+				"error":   err.Error(),
+			})
+		} else {
+			ctx.JSON(http.StatusInternalServerError, gin.H{
+				"message": "failed to update user",
+				"error":   err.Error(),
 			})
 		}
 		return

@@ -1,6 +1,8 @@
 package models
 
 import (
+	"mime/multipart"
+
 	"github.com/google/uuid"
 )
 
@@ -34,4 +36,10 @@ type UserUpdate struct {
 	DisplayName string `json:"displayName"`
 	PhoneNumber string `json:"phoneNumber"`
 	Bio         string `json:"bio"`
+}
+
+type UpdateProfilePhoto struct {
+	ID        uuid.UUID             `json:"-"`
+	PhotoLink string                `json:"-"`
+	PhotoIMG  *multipart.FileHeader `form:"photo" binding:"required"`
 }
