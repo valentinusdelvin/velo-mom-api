@@ -11,6 +11,7 @@ import (
 	"github.com/valentinusdelvin/velo-mom-api/utils/bcrypt"
 	"github.com/valentinusdelvin/velo-mom-api/utils/jwt"
 	"github.com/valentinusdelvin/velo-mom-api/utils/middleware"
+	"github.com/valentinusdelvin/velo-mom-api/utils/supabase"
 )
 
 func init() {
@@ -21,6 +22,7 @@ func main() {
 	bcrypt := bcrypt.Init()
 	jwt := jwt.NewJWT()
 	db := initializers.ConnectToDB()
+	supabase := supabase.Init()
 	initializers.AutoMigrate(db)
 
 	repository := repository.NewRepository(db)
@@ -28,6 +30,7 @@ func main() {
 		Repository: repository,
 		Bcrypt:     &bcrypt,
 		JWT:        &jwt,
+		Supabase:   &supabase,
 	})
 	middleware := middleware.Init(usecase)
 
