@@ -1,9 +1,6 @@
 package main
 
 import (
-	"fmt"
-
-	"github.com/gin-gonic/gin"
 	"github.com/valentinusdelvin/velo-mom-api/initializers"
 	"github.com/valentinusdelvin/velo-mom-api/internal/repository"
 	"github.com/valentinusdelvin/velo-mom-api/internal/rest"
