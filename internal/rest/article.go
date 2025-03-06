@@ -4,16 +4,17 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	"github.com/valentinusdelvin/velo-mom-api/models"
 )
 
 func (r *Rest) CreateArticle(ctx *gin.Context) {
 	param := models.CreateArticle{}
 
-	err := ctx.ShouldBindJSON(&param)
+	err := ctx.ShouldBindWith(&param, binding.FormMultipart)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
-			"message": "failed to bind with JSON",
+			"message": "failed to bind request body",
 			"error":   err,
 		})
 		return
@@ -23,7 +24,7 @@ func (r *Rest) CreateArticle(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": "failed to create article",
-			"error":   err,
+			"error":   err.Error(),
 		})
 		return
 	}

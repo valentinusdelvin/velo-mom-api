@@ -1,12 +1,16 @@
 package usecase
 
 import (
+	"errors"
+	"fmt"
+	"path/filepath"
 	"time"
 
 	"github.com/google/uuid"
 	"github.com/valentinusdelvin/velo-mom-api/entity"
 	"github.com/valentinusdelvin/velo-mom-api/internal/repository"
 	"github.com/valentinusdelvin/velo-mom-api/models"
+	"github.com/valentinusdelvin/velo-mom-api/utils/supabase"
 	addition "github.com/valentinusdelvin/velo-mom-api/utils/timeconvert"
 )
 
@@ -18,26 +22,39 @@ type InterArticleUsecase interface {
 
 type ArticleUsecase struct {
 	arsc repository.InterArticleRepository
+	sb   supabase.InterSupabase
 }
 
-func NewArticleUsecase(articleRepo repository.InterArticleRepository) InterArticleUsecase {
+func NewArticleUsecase(articleRepo repository.InterArticleRepository, supabase supabase.InterSupabase) InterArticleUsecase {
 	return &ArticleUsecase{
 		arsc: articleRepo,
+		sb:   supabase,
 	}
 }
 
 func (a *ArticleUsecase) CreateArticle(param models.CreateArticle) error {
+	ext := filepath.Ext(param.PhotoIMG.Filename)
+	if ext == "" {
+		return errors.New("invalid file extension: no file extension found")
+	}
+	param.PhotoIMG.Filename = fmt.Sprintf("%s%s", param.PhotoIMG.Filename, ext)
+
+	newPhotoLink, err := a.sb.Upload(param.PhotoIMG)
+	if err != nil {
+		return err
+	}
+
 	articlePost := entity.Article{
 		ID:        uuid.New(),
 		Title:     param.Title,
 		Content:   param.Content,
 		Summary:   param.Summary,
 		Author:    param.Author,
-		ImageURL:  param.ImageURL,
+		ImageURL:  newPhotoLink,
 		CreatedAt: addition.TimeConvert(time.Now()),
 	}
 
-	_, err := a.arsc.CreateArticle(articlePost)
+	_, err = a.arsc.CreateArticle(articlePost)
 	if err != nil {
 		return err
 	}
