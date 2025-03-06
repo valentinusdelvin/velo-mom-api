@@ -1,17 +1,14 @@
 package main
 
 import (
-	"fmt"
-
-	"github.com/gin-gonic/gin"
 	"github.com/valentinusdelvin/velo-mom-api/initializers"
 	"github.com/valentinusdelvin/velo-mom-api/internal/repository"
 	"github.com/valentinusdelvin/velo-mom-api/internal/rest"
 	"github.com/valentinusdelvin/velo-mom-api/internal/usecase"
-	"github.com/valentinusdelvin/velo-mom-api/utils/bcrypt"
-	"github.com/valentinusdelvin/velo-mom-api/utils/jwt"
-	"github.com/valentinusdelvin/velo-mom-api/utils/middleware"
-	"github.com/valentinusdelvin/velo-mom-api/utils/supabase"
+	"github.com/valentinusdelvin/velo-mom-api/pkg/bcrypt"
+	"github.com/valentinusdelvin/velo-mom-api/pkg/jwt"
+	"github.com/valentinusdelvin/velo-mom-api/pkg/middleware"
+	"github.com/valentinusdelvin/velo-mom-api/pkg/supabase"
 )
 
 func init() {
