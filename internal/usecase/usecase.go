@@ -12,6 +12,7 @@ type Usecase struct {
 	ArticleUsecase InterArticleUsecase
 	VideoUsecase   InterVideoUsecase
 	JournalUsecase InterJournalUsecase
+	WebinarUsecase InterWebinarUsecase
 }
 
 type InitializersParam struct {
@@ -26,11 +27,13 @@ func NewUsecase(param InitializersParam) *Usecase {
 	ArticleUsecase := NewArticleUsecase(param.Repository.ArticleRepository, *param.Supabase)
 	VideoUsecase := NewVideoUsecase(param.Repository.VideoRepository)
 	JournalUsecase := NewJournalUsecase(param.Repository.JournalRepository)
+	WebinarUsecase := NewWebinarUsecase(param.Repository.WebinarRepository, *param.Supabase)
 
 	return &Usecase{
 		UserUsecase:    UserUsecase,
 		ArticleUsecase: ArticleUsecase,
 		VideoUsecase:   VideoUsecase,
 		JournalUsecase: JournalUsecase,
+		WebinarUsecase: WebinarUsecase,
 	}
 }

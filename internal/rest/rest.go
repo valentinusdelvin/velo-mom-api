@@ -47,6 +47,11 @@ func (r *Rest) FinalCheck() {
 	journalpost.POST("/", r.middleware.Authenticate, r.CreateJournal)
 	journalpost.GET("/me", r.middleware.Authenticate, r.GetUserJournals)
 	journalpost.GET("/me/:id", r.middleware.Authenticate, r.GetUserJournalByID)
+
+	webinarpost := routerGroup.Group("/webinars")
+	webinarpost.POST("/", r.middleware.Authenticate, r.CreateWebinar)
+	webinarpost.GET("/", r.GetWebinars)
+	webinarpost.GET("/:id", r.GetWebinarByID)
 }
 
 func (r *Rest) Run() {
