@@ -19,8 +19,8 @@ type CreateArticle struct {
 
 type GetArticles struct {
 	ID        uuid.UUID `json:"id"`
-	Title     string    `json:"title" binding:"required,min=3"`
-	Summary   string    `json:"summary" binding:"required,min=5"`
+	Title     string    `json:"title"`
+	Summary   string    `json:"summary"`
 	CreatedAt string    `json:"createdAt"`
 	ImageURL  string    `json:"imageURL"`
 }

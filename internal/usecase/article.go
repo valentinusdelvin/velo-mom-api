@@ -33,11 +33,12 @@ func NewArticleUsecase(articleRepo repository.InterArticleRepository, supabase s
 }
 
 func (a *ArticleUsecase) CreateArticle(param models.CreateArticle) error {
+	param.ID = uuid.New()
 	ext := filepath.Ext(param.PhotoIMG.Filename)
 	if ext == "" {
 		return errors.New("invalid file extension: no file extension found")
 	}
-	param.PhotoIMG.Filename = fmt.Sprintf("%s%s", param.PhotoIMG.Filename, ext)
+	param.PhotoIMG.Filename = fmt.Sprintf("%s-%v%s", param.ID, time.Now().Unix(), ext)
 
 	newPhotoLink, err := a.sb.Upload(param.PhotoIMG)
 	if err != nil {
@@ -45,7 +46,7 @@ func (a *ArticleUsecase) CreateArticle(param models.CreateArticle) error {
 	}
 
 	articlePost := entity.Article{
-		ID:        uuid.New(),
+		ID:        param.ID,
 		Title:     param.Title,
 		Content:   param.Content,
 		Summary:   param.Summary,

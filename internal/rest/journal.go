@@ -47,20 +47,20 @@ func (r *Rest) GetUserJournals(ctx *gin.Context) {
 	user, authorized := ctx.Get("userID")
 	if !authorized {
 		ctx.JSON(http.StatusUnauthorized, gin.H{
-			"error": "Unauthorized",
+			"error": "unauthorized",
 		})
 		return
 	}
 
 	userID, ok := user.(uuid.UUID)
 	if !ok {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid User Id"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "invalid user id"})
 		return
 	}
 
 	journals, err := r.usecase.JournalUsecase.GetUserJournals(userID)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve journals"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to retrieve journals"})
 		return
 	}
 	ctx.JSON(http.StatusOK, journals)
@@ -70,14 +70,14 @@ func (r *Rest) GetUserJournalByID(ctx *gin.Context) {
 	user, authorized := ctx.Get("user")
 	if !authorized {
 		ctx.JSON(http.StatusUnauthorized, gin.H{
-			"error": "Unauthorized",
+			"error": "unauthorized",
 		})
 		return
 	}
 
 	userID, ok := user.(uuid.UUID)
 	if !ok {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid User Id"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "invalid user id"})
 		return
 	}
 

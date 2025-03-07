@@ -51,7 +51,7 @@ func (r *Rest) GetVideoByID(ctx *gin.Context) {
 	video, err := r.usecase.VideoUsecase.GetVideoByID(id)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"message": "failed to get article",
+			"message": "failed to get webinar",
 			"error":   err,
 		})
 		return
