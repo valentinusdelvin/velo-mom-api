@@ -4,7 +4,7 @@ import (
 	"mime/multipart"
 	"os"
 
-	supabase_storage_uploader "github.com/adityarizkyramadhan/supabase-storage-uploader"
+	supabase "github.com/adityarizkyramadhan/supabase-storage-uploader"
 )
 
 type InterSupabase interface {
@@ -13,11 +13,11 @@ type InterSupabase interface {
 }
 
 type storageSupabase struct {
-	client *supabase_storage_uploader.Client
+	client *supabase.Client
 }
 
 func Init() InterSupabase {
-	spbClient := supabase_storage_uploader.New(
+	spbClient := supabase.New(
 		os.Getenv("SUPABASE_URL"),
 		os.Getenv("SUPABASE_TOKEN"),
 		os.Getenv("SUPABASE_BUCKET"),
