@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"path/filepath"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/valentinusdelvin/velo-mom-api/entity"
@@ -18,8 +19,9 @@ type InterUserUsecase interface {
 	Register(req models.UserRegister) error
 	Login(req models.UserLogin) (models.UserLoginResponse, error)
 	GetUser(param models.UserParam) (entity.User, error)
-	UpdateUser(param models.UserUpdate, user entity.User) error
-	UpdateProfilePhoto(param models.UpdateProfilePhoto, user entity.User) error
+	GetUserInfo(id uuid.UUID) (entity.User, error)
+	UpdateUser(param models.UserUpdate, id uuid.UUID) error
+	UpdateProfilePhoto(param models.UpdateProfilePhoto, id uuid.UUID) error
 }
 
 type UserUsecase struct {
@@ -91,8 +93,12 @@ func (u *UserUsecase) GetUser(param models.UserParam) (entity.User, error) {
 	return u.ursc.GetUser(param)
 }
 
-func (u *UserUsecase) UpdateUser(param models.UserUpdate, user entity.User) error {
-	err := u.ursc.UpdateUser(param, user)
+func (u *UserUsecase) GetUserInfo(id uuid.UUID) (entity.User, error) {
+	return u.ursc.GetUserInfo(id)
+}
+
+func (u *UserUsecase) UpdateUser(param models.UserUpdate, id uuid.UUID) error {
+	err := u.ursc.UpdateUser(param, id)
 	if err != nil {
 		return err
 	}
@@ -100,12 +106,12 @@ func (u *UserUsecase) UpdateUser(param models.UserUpdate, user entity.User) erro
 	return nil
 }
 
-func (u *UserUsecase) UpdateProfilePhoto(param models.UpdateProfilePhoto, user entity.User) error {
+func (u *UserUsecase) UpdateProfilePhoto(param models.UpdateProfilePhoto, id uuid.UUID) error {
 	ext := filepath.Ext(param.PhotoIMG.Filename)
 	if ext == "" {
 		return errors.New("invalid file extension: no file extension found")
 	}
-	param.PhotoIMG.Filename = fmt.Sprintf("%s%s", param.ID.String(), ext)
+	param.PhotoIMG.Filename = fmt.Sprintf("%s%v%s", id.String(), time.Now().Unix(), ext)
 
 	newPhotoLink, err := u.sb.Upload(param.PhotoIMG)
 	if err != nil {
@@ -118,7 +124,7 @@ func (u *UserUsecase) UpdateProfilePhoto(param models.UpdateProfilePhoto, user e
 
 	param.PhotoLink = newPhotoLink
 
-	err = u.ursc.UpdateProfilePhoto(param, user)
+	err = u.ursc.UpdateProfilePhoto(param, id)
 	if err != nil {
 		return err
 	}

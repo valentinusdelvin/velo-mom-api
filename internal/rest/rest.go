@@ -2,7 +2,6 @@ package rest
 
 import (
 	"log"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/valentinusdelvin/velo-mom-api/internal/usecase"
@@ -28,7 +27,7 @@ func (r *Rest) FinalCheck() {
 
 	routerGroup.POST("/register", r.Register)
 	routerGroup.POST("/login", r.Login)
-	routerGroup.GET("/login-user", r.middleware.Authenticate, getLoginUser)
+	routerGroup.GET("/me", r.middleware.Authenticate, r.GetUserInfo)
 	routerGroup.POST("/auth-email", r.middleware.Authenticate, r.AuthenticateEmail)
 	routerGroup.PATCH("/update-user", r.middleware.Authenticate, r.UpdateUser)
 	routerGroup.PATCH("/update-photo", r.middleware.Authenticate, r.UpdateProfilePhoto)
@@ -61,17 +60,4 @@ func (r *Rest) Run() {
 	if err != nil {
 		log.Fatalf("failed to run server: %v", err)
 	}
-}
-
-func getLoginUser(ctx *gin.Context) {
-	user, ok := ctx.Get("user")
-	if !ok {
-		ctx.JSON(http.StatusUnauthorized, gin.H{
-			"error": "failed to login"})
-		return
-	}
-
-	ctx.JSON(http.StatusOK, gin.H{
-		"user": user,
-	})
 }
