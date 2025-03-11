@@ -33,12 +33,12 @@ func (r *Rest) FinalCheck() {
 	routerGroup.PATCH("/update-photo", r.middleware.Authenticate, r.UpdateProfilePhoto)
 
 	articlepost := routerGroup.Group("/articles")
-	articlepost.POST("/", r.middleware.Authenticate, r.CreateArticle)
+	articlepost.POST("/", r.middleware.Authorization, r.CreateArticle)
 	articlepost.GET("/", r.GetArticles)
 	articlepost.GET("/:id", r.GetArticleByID)
 
 	videopost := routerGroup.Group("/videos")
-	videopost.POST("/", r.middleware.Authenticate, r.CreateVideo)
+	videopost.POST("/", r.middleware.Authorization, r.CreateVideo)
 	videopost.GET("/", r.GetVideos)
 	videopost.GET("/:id", r.GetVideoByID)
 
