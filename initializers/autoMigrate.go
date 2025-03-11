@@ -11,6 +11,11 @@ func AutoMigrate(db *gorm.DB) {
 	err := db.AutoMigrate(
 		&entity.User{},
 		&entity.Article{},
+		&entity.Video{},
+		&entity.Journal{},
+		&entity.Webinar{},
+		&entity.Payment{},
+		&entity.WebinarAttendee{},
 	)
 
 	if err != nil {

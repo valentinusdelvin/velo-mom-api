@@ -1,22 +1,18 @@
 package jwt
 
 import (
-	"errors"
 	"log"
 	"os"
 	"strconv"
 	"time"
 
-	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
-	"github.com/valentinusdelvin/velo-mom-api/entity"
 )
 
 type InterJWT interface {
-	CreateToken(UserId uuid.UUID) (string, error)
-	ValidateToken(tokenString string) (uuid.UUID, error)
-	GetLoginUser(ctx *gin.Context) (entity.User, error)
+	CreateToken(UserId uuid.UUID, IsAdmin bool) (string, error)
+	ValidateToken(tokenString string) (uuid.UUID, bool, error)
 }
 
 type JWTService struct {
@@ -25,7 +21,8 @@ type JWTService struct {
 }
 
 type Claims struct {
-	UserId uuid.UUID
+	UserId  uuid.UUID
+	IsAdmin bool
 	jwt.RegisteredClaims
 }
 
@@ -42,9 +39,10 @@ func NewJWT() InterJWT {
 	}
 }
 
-func (w *JWTService) CreateToken(UserId uuid.UUID) (string, error) {
+func (w *JWTService) CreateToken(UserId uuid.UUID, IsAdmin bool) (string, error) {
 	claims := &Claims{
-		UserId: UserId,
+		UserId:  UserId,
+		IsAdmin: IsAdmin,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(w.Expired)),
 		},
@@ -59,28 +57,19 @@ func (w *JWTService) CreateToken(UserId uuid.UUID) (string, error) {
 	return tokenString, nil
 }
 
-func (w *JWTService) ValidateToken(tokenString string) (uuid.UUID, error) {
+func (w *JWTService) ValidateToken(tokenString string) (uuid.UUID, bool, error) {
 	claims := &Claims{}
 	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(w.SecretKey), nil
 	})
 
 	if err != nil {
-		return claims.UserId, err
+		return claims.UserId, false, err
 	}
 
 	if !token.Valid {
-		return claims.UserId, err
+		return claims.UserId, false, err
 	}
 
-	return claims.UserId, nil
-}
-
-func (w *JWTService) GetLoginUser(ctx *gin.Context) (entity.User, error) {
-	user, ok := ctx.Get("user")
-	if !ok {
-		return entity.User{}, errors.New("User not found")
-	}
-
-	return user.(entity.User), nil
+	return claims.UserId, claims.IsAdmin, nil
 }

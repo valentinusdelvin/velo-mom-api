@@ -11,6 +11,7 @@ type User struct {
 	Email       string    `gorm:"type:varchar(255);unique;not null"`
 	Password    string    `gorm:"type:varchar(255);not null"`
 	DisplayName string    `gorm:"type:varchar(255);not null"`
+	PhotoLink   string
 	PhoneNumber string
 	Bio         string
 	IsAdmin     bool

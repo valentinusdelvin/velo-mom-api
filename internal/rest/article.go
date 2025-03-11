@@ -2,18 +2,20 @@ package rest
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	"github.com/valentinusdelvin/velo-mom-api/models"
 )
 
 func (r *Rest) CreateArticle(ctx *gin.Context) {
 	param := models.CreateArticle{}
 
-	err := ctx.ShouldBindJSON(&param)
+	err := ctx.ShouldBindWith(&param, binding.FormMultipart)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
-			"message": "failed to bind with JSON",
+			"message": "failed to bind request body",
 			"error":   err,
 		})
 		return
@@ -23,7 +25,7 @@ func (r *Rest) CreateArticle(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": "failed to create article",
-			"error":   err,
+			"error":   err.Error(),
 		})
 		return
 	}
@@ -33,7 +35,9 @@ func (r *Rest) CreateArticle(ctx *gin.Context) {
 }
 
 func (r *Rest) GetArticles(ctx *gin.Context) {
-	articles, err := r.usecase.ArticleUsecase.GetArticles()
+	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
+	size, _ := strconv.Atoi(ctx.DefaultQuery("size", "9"))
+	articles, err := r.usecase.ArticleUsecase.GetArticles(page, size)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": "failed to get articles",
@@ -42,10 +46,7 @@ func (r *Rest) GetArticles(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": "success to get articles",
-		"data":    articles,
-	})
+	ctx.JSON(http.StatusOK, articles)
 }
 
 func (r *Rest) GetArticleByID(ctx *gin.Context) {
@@ -60,8 +61,5 @@ func (r *Rest) GetArticleByID(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": "success to get article",
-		"data":    article,
-	})
+	ctx.JSON(http.StatusOK, article)
 }
