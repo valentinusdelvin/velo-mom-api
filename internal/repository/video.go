@@ -8,7 +8,7 @@ import (
 
 type InterVideoRepository interface {
 	CreateVideo(video entity.Video) (entity.Video, error)
-	GetVideos() ([]models.CreateVideo, error)
+	GetVideos(page, size int) ([]models.CreateVideo, error)
 	GetVideoByID(id string) (entity.Video, error)
 }
 
@@ -30,10 +30,11 @@ func (vr *VideoRepository) CreateVideo(video entity.Video) (entity.Video, error)
 	return video, nil
 }
 
-func (vr *VideoRepository) GetVideos() ([]models.CreateVideo, error) {
+func (vr *VideoRepository) GetVideos(page, size int) ([]models.CreateVideo, error) {
 	var videos []models.CreateVideo
+	offset := (page - 1) * size
 
-	err := vr.db.Table("videos").Find(&videos).Error
+	err := vr.db.Table("videos").Order("created_at DESC").Limit(size).Offset(offset).Find(&videos).Error
 	if err != nil {
 		return nil, err
 	}

@@ -9,7 +9,7 @@ import (
 
 type InterJournalRepository interface {
 	CreateJournal(journal entity.Journal) (entity.Journal, error)
-	GetUserJournals(userID uuid.UUID) ([]models.CreateJournal, error)
+	GetUserJournals(userID uuid.UUID, page int, size int) ([]models.CreateJournal, error)
 	GetUserJournalByID(userID uuid.UUID, id string) (entity.Journal, error)
 }
 
@@ -31,10 +31,11 @@ func (jr *JournalRepository) CreateJournal(journal entity.Journal) (entity.Journ
 	return journal, nil
 }
 
-func (jr *JournalRepository) GetUserJournals(userID uuid.UUID) ([]models.CreateJournal, error) {
+func (jr *JournalRepository) GetUserJournals(userID uuid.UUID, page int, size int) ([]models.CreateJournal, error) {
 	var journals []models.CreateJournal
+	offset := (page - 1) * size
 
-	err := jr.db.Table("journals").Where("user_id = ?", userID).Find(&journals).Error
+	err := jr.db.Table("journals").Order("def_created_at DESC").Limit(size).Offset(offset).Where("user_id = ?", userID).Find(&journals).Error
 	if err != nil {
 		return nil, err
 	}

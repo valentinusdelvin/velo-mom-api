@@ -8,6 +8,7 @@ import (
 
 type Interface interface {
 	Authenticate(c *gin.Context)
+	Authorization(c *gin.Context)
 }
 
 type Middleware struct {

@@ -13,6 +13,7 @@ import (
 
 func init() {
 	initializers.LoadEnvVariables()
+	initializers.MidtransInit()
 }
 
 func main() {

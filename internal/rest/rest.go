@@ -51,6 +51,8 @@ func (r *Rest) FinalCheck() {
 	webinarpost.POST("/", r.middleware.Authenticate, r.CreateWebinar)
 	webinarpost.GET("/", r.GetWebinars)
 	webinarpost.GET("/:id", r.GetWebinarByID)
+	webinarpost.POST("/purchase/:id", r.middleware.Authenticate, r.Purchase)
+	webinarpost.POST("/validate", r.Validate)
 }
 
 func (r *Rest) Run() {

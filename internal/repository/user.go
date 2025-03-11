@@ -10,7 +10,7 @@ import (
 type InterUserRepository interface {
 	CreateUser(user entity.User) (entity.User, error)
 	GetUser(param models.UserParam) (entity.User, error)
-	GetUserInfo(id uuid.UUID) (entity.User, error)
+	GetUserInfo(id uuid.UUID) (models.UserInfo, error)
 	UpdateUser(param models.UserUpdate, id uuid.UUID) error
 	UpdateProfilePhoto(param models.UpdateProfilePhoto, id uuid.UUID) error
 }
@@ -44,9 +44,11 @@ func (ur *UserRepository) GetUser(param models.UserParam) (entity.User, error) {
 	return user, nil
 }
 
-func (ur *UserRepository) GetUserInfo(id uuid.UUID) (entity.User, error) {
-	user := entity.User{}
-	err := ur.db.Select("id, display_name, email, phone_number, bio, photo_link").Where("id = ?", id).First(&user).Error
+func (ur *UserRepository) GetUserInfo(id uuid.UUID) (models.UserInfo, error) {
+	user := models.UserInfo{}
+	query := ur.db.Model(&entity.User{}).Where("id = ?", id)
+
+	err := query.First(&user).Error
 	if err != nil {
 		return user, err
 	}

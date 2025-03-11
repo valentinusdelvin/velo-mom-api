@@ -1,6 +1,10 @@
 package entity
 
-import "github.com/google/uuid"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 type Emoji int
 
@@ -13,11 +17,12 @@ const (
 )
 
 type Journal struct {
-	ID        uuid.UUID `json:"id" gorm:"primaryKey"`
-	UserID    uuid.UUID `gorm:"foreignkey:ID;references:users"`
-	CreatedAt string    `json:"created_at"`
-	Title     string    `gorm:"not null"`
-	Story     string
-	Feels     string
-	Emoji     Emoji `gorm:"emoji"`
+	ID            uuid.UUID `json:"id" gorm:"primaryKey"`
+	UserID        uuid.UUID `gorm:"foreignkey:ID;references:users"`
+	Def_CreatedAt time.Time `gorm:"autoCreateTime"`
+	CreatedAt     string
+	Title         string `gorm:"not null"`
+	Story         string
+	Feels         string
+	Emoji         Emoji `gorm:"emoji"`
 }

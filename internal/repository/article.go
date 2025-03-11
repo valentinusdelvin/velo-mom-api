@@ -8,7 +8,7 @@ import (
 
 type InterArticleRepository interface {
 	CreateArticle(article entity.Article) (entity.Article, error)
-	GetArticles() ([]models.GetArticles, error)
+	GetArticles(page, size int) ([]models.GetArticles, error)
 	GetArticleByID(id string) (entity.Article, error)
 }
 
@@ -31,10 +31,12 @@ func (ar *ArticleRepository) CreateArticle(article entity.Article) (entity.Artic
 	return article, nil
 }
 
-func (ar *ArticleRepository) GetArticles() ([]models.GetArticles, error) {
+func (ar *ArticleRepository) GetArticles(page, size int) ([]models.GetArticles, error) {
 	var articles []models.GetArticles
 
-	err := ar.db.Table("articles").Find(&articles).Error
+	offset := (page - 1) * size
+
+	err := ar.db.Table("articles").Order("Def_CreatedAt DESC").Limit(size).Offset(offset).Find(&articles).Error
 	if err != nil {
 		return nil, err
 	}

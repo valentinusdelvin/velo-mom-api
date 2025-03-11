@@ -12,7 +12,7 @@ type CreateWebinar struct {
 	WebinarName string                `form:"name" binding:"required"`
 	Subheader   string                `form:"subheader" binding:"required"`
 	Description string                `form:"description" binding:"required"`
-	Price       string                `form:"price" binding:"required"`
+	Price       uint64                `form:"price" binding:"required"`
 	Quota       uint                  `form:"quota" binding:"required"`
 	EventDate   time.Time             `form:"date" binding:"required" time_format:"02-01-2006"`
 	EventTime   string                `form:"time" binding:"required"`
@@ -25,9 +25,15 @@ type GetWebinars struct {
 	ID          uuid.UUID `json:"id"`
 	WebinarName string    `json:"name"`
 	Subheader   string    `json:"subheader"`
-	Price       string    `json:"price"`
+	Price       uint64    `json:"price"`
 	StrDate     string    `json:"date"`
 	EventTime   string    `json:"time"`
 	Location    string    `json:"location"`
 	Photolink   string    `json:"photolink"`
+}
+
+type WebinarInfo struct {
+	ID          uuid.UUID `json:"id"`
+	WebinarName string    `json:"name"`
+	Price       uint64    `json:"price"`
 }

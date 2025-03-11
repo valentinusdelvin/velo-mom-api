@@ -8,6 +8,7 @@ type Repository struct {
 	VideoRepository   InterVideoRepository
 	JournalRepository InterJournalRepository
 	WebinarRepository InterWebinarRepository
+	PaymentRepository InterPaymentRepository
 }
 
 func NewRepository(db *gorm.DB) *Repository {
@@ -16,6 +17,7 @@ func NewRepository(db *gorm.DB) *Repository {
 	VideoRepository := NewVideoRepository(db)
 	JournalRepository := NewJournalRepository(db)
 	WebinarRepository := NewWebinarRepository(db)
+	PaymentRepository := NewPaymentRepository(db)
 
 	return &Repository{
 		UserRepository:    UserRepository,
@@ -23,5 +25,6 @@ func NewRepository(db *gorm.DB) *Repository {
 		VideoRepository:   VideoRepository,
 		JournalRepository: JournalRepository,
 		WebinarRepository: WebinarRepository,
+		PaymentRepository: PaymentRepository,
 	}
 }

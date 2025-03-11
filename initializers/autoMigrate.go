@@ -14,6 +14,7 @@ func AutoMigrate(db *gorm.DB) {
 		&entity.Video{},
 		&entity.Journal{},
 		&entity.Webinar{},
+		&entity.Payment{},
 	)
 
 	if err != nil {

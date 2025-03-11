@@ -16,7 +16,7 @@ import (
 
 type InterArticleUsecase interface {
 	CreateArticle(param models.CreateArticle) error
-	GetArticles() ([]models.GetArticles, error)
+	GetArticles(page, size int) ([]models.GetArticles, error)
 	GetArticleByID(id string) (entity.Article, error)
 }
 
@@ -46,13 +46,14 @@ func (a *ArticleUsecase) CreateArticle(param models.CreateArticle) error {
 	}
 
 	articlePost := entity.Article{
-		ID:        param.ID,
-		Title:     param.Title,
-		Content:   param.Content,
-		Summary:   param.Summary,
-		Author:    param.Author,
-		ImageURL:  newPhotoLink,
-		CreatedAt: addition.TimeConvert(time.Now()),
+		ID:            param.ID,
+		Title:         param.Title,
+		Content:       param.Content,
+		Summary:       param.Summary,
+		Author:        param.Author,
+		ImageURL:      newPhotoLink,
+		Def_CreatedAt: time.Now(),
+		CreatedAt:     addition.TimeConvert(time.Now()),
 	}
 
 	_, err = a.arsc.CreateArticle(articlePost)
@@ -62,8 +63,8 @@ func (a *ArticleUsecase) CreateArticle(param models.CreateArticle) error {
 	return nil
 }
 
-func (a *ArticleUsecase) GetArticles() ([]models.GetArticles, error) {
-	articles, err := a.arsc.GetArticles()
+func (a *ArticleUsecase) GetArticles(page, size int) ([]models.GetArticles, error) {
+	articles, err := a.arsc.GetArticles(page, size)
 	if err != nil {
 		return nil, err
 	}

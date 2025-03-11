@@ -114,7 +114,7 @@ func (r *Rest) GetUserInfo(ctx *gin.Context) {
 	user, ok := ctx.Get("userID")
 	if !ok {
 		ctx.JSON(http.StatusUnauthorized, gin.H{
-			"message": "failed to get user",
+			"message": "unauthorized",
 		})
 		return
 	}

@@ -12,7 +12,7 @@ import (
 
 type InterJournalUsecase interface {
 	CreateJournal(param models.CreateJournal) error
-	GetUserJournals(userID uuid.UUID) ([]models.CreateJournal, error)
+	GetUserJournals(userID uuid.UUID, page int, size int) ([]models.CreateJournal, error)
 	GetUserJournalByID(userID uuid.UUID, id string) (entity.Journal, error)
 }
 
@@ -28,13 +28,14 @@ func NewJournalUsecase(journalRepo repository.InterJournalRepository) InterJourn
 
 func (j *JournalUsecase) CreateJournal(param models.CreateJournal) error {
 	journalpost := entity.Journal{
-		ID:        uuid.New(),
-		UserID:    param.UserID,
-		Title:     param.Title,
-		Story:     param.Story,
-		Feels:     param.Feels,
-		Emoji:     entity.Emoji(param.Emoji),
-		CreatedAt: addition.TimeConvert(time.Now()),
+		ID:            uuid.New(),
+		UserID:        param.UserID,
+		Title:         param.Title,
+		Story:         param.Story,
+		Feels:         param.Feels,
+		Emoji:         entity.Emoji(param.Emoji),
+		Def_CreatedAt: time.Now(),
+		CreatedAt:     addition.TimeConvert(time.Now()),
 	}
 
 	_, err := j.jrsc.CreateJournal(journalpost)
@@ -44,8 +45,8 @@ func (j *JournalUsecase) CreateJournal(param models.CreateJournal) error {
 	return nil
 }
 
-func (j *JournalUsecase) GetUserJournals(userID uuid.UUID) ([]models.CreateJournal, error) {
-	journals, err := j.jrsc.GetUserJournals(userID)
+func (j *JournalUsecase) GetUserJournals(userID uuid.UUID, page int, size int) ([]models.CreateJournal, error) {
+	journals, err := j.jrsc.GetUserJournals(userID, page, size)
 	if err != nil {
 		return nil, err
 	}

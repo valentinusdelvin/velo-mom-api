@@ -2,6 +2,7 @@ package rest
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/valentinusdelvin/velo-mom-api/models"
@@ -33,7 +34,10 @@ func (r *Rest) CreateVideo(ctx *gin.Context) {
 }
 
 func (r *Rest) GetVideos(ctx *gin.Context) {
-	videos, err := r.usecase.VideoUsecase.GetVideos()
+	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
+	size, _ := strconv.Atoi(ctx.DefaultQuery("size", "9"))
+
+	videos, err := r.usecase.VideoUsecase.GetVideos(page, size)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": "failed to get articles",

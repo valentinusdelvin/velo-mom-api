@@ -23,6 +23,7 @@ type UserLoginResponse struct {
 }
 
 type UserInfo struct {
+	PhotoLink   string `json:""`
 	DisplayName string `json:"name"`
 	Email       string `json:"email"`
 	PhoneNumber string `json:"phoneNumber"`

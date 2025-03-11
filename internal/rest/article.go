@@ -2,6 +2,7 @@ package rest
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -34,7 +35,9 @@ func (r *Rest) CreateArticle(ctx *gin.Context) {
 }
 
 func (r *Rest) GetArticles(ctx *gin.Context) {
-	articles, err := r.usecase.ArticleUsecase.GetArticles()
+	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
+	size, _ := strconv.Atoi(ctx.DefaultQuery("size", "9"))
+	articles, err := r.usecase.ArticleUsecase.GetArticles(page, size)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": "failed to get articles",

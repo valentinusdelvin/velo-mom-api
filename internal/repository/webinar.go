@@ -3,6 +3,7 @@ package repository
 import (
 	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/valentinusdelvin/velo-mom-api/entity"
 	"github.com/valentinusdelvin/velo-mom-api/models"
 	"gorm.io/gorm"
@@ -12,6 +13,8 @@ type InterWebinarRepository interface {
 	CreateWebinar(Webinar entity.Webinar) (entity.Webinar, error)
 	GetWebinars() ([]models.GetWebinars, error)
 	GetWebinarByID(id string) (entity.Webinar, error)
+	CreateWebinarAttendee(tx *gorm.DB, attendee entity.WebinarAttendee) error
+	UpdateWebinarInfo(tx *gorm.DB, webinarID uuid.UUID) error
 }
 
 type WebinarRepository struct {
@@ -52,4 +55,17 @@ func (wr *WebinarRepository) GetWebinarByID(id string) (entity.Webinar, error) {
 	}
 
 	return webinar, nil
+}
+
+func (wr *WebinarRepository) CreateWebinarAttendee(tx *gorm.DB, attendee entity.WebinarAttendee) error {
+	return tx.Create(&attendee).Error
+}
+
+func (wr *WebinarRepository) UpdateWebinarInfo(tx *gorm.DB, webinarID uuid.UUID) error {
+	return tx.Model(&entity.Webinar{}).
+		Where("id = ? AND quota > 0", webinarID).
+		Updates(map[string]interface{}{
+			"quota":     gorm.Expr("quota - 1"),
+			"is_bought": true,
+		}).Error
 }

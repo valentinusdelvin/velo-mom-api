@@ -18,7 +18,7 @@ func (m *Middleware) Authenticate(c *gin.Context) {
 	}
 
 	token := strings.Split(bearertoken, " ")[1]
-	userId, err := m.jwt.ValidateToken(token)
+	userId, IsAdmin, err := m.jwt.ValidateToken(token)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": "invalid token/Failed to validate token",
@@ -28,6 +28,7 @@ func (m *Middleware) Authenticate(c *gin.Context) {
 	}
 
 	c.Set("userID", userId)
+	c.Set("isAdmin", IsAdmin)
 
 	c.Next()
 }

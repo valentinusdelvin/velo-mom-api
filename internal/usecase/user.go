@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -19,7 +20,7 @@ type InterUserUsecase interface {
 	Register(req models.UserRegister) error
 	Login(req models.UserLogin) (models.UserLoginResponse, error)
 	GetUser(param models.UserParam) (entity.User, error)
-	GetUserInfo(id uuid.UUID) (entity.User, error)
+	GetUserInfo(id uuid.UUID) (models.UserInfo, error)
 	UpdateUser(param models.UserUpdate, id uuid.UUID) error
 	UpdateProfilePhoto(param models.UpdateProfilePhoto, id uuid.UUID) error
 }
@@ -56,6 +57,10 @@ func (u *UserUsecase) Register(param models.UserRegister) error {
 		Email:       param.Email,
 	}
 
+	if strings.Split(param.Email, "@")[1] == "velomom.id" {
+		user.IsAdmin = true
+	}
+
 	_, err = u.ursc.CreateUser(user)
 	if err != nil {
 		return err
@@ -79,7 +84,7 @@ func (u *UserUsecase) Login(param models.UserLogin) (models.UserLoginResponse, e
 		return result, err
 	}
 
-	token, err := u.jwtAuth.CreateToken(user.ID)
+	token, err := u.jwtAuth.CreateToken(user.ID, user.IsAdmin)
 	if err != nil {
 		return result, err
 	}
@@ -93,7 +98,7 @@ func (u *UserUsecase) GetUser(param models.UserParam) (entity.User, error) {
 	return u.ursc.GetUser(param)
 }
 
-func (u *UserUsecase) GetUserInfo(id uuid.UUID) (entity.User, error) {
+func (u *UserUsecase) GetUserInfo(id uuid.UUID) (models.UserInfo, error) {
 	return u.ursc.GetUserInfo(id)
 }
 
