@@ -48,7 +48,7 @@ func (r *Rest) FinalCheck() {
 	journalpost.GET("/me/:id", r.middleware.Authenticate, r.GetUserJournalByID)
 
 	webinarpost := routerGroup.Group("/webinars")
-	webinarpost.POST("/", r.middleware.Authenticate, r.CreateWebinar)
+	webinarpost.POST("/", r.middleware.Authorization, r.CreateWebinar)
 	webinarpost.GET("/", r.GetWebinars)
 	webinarpost.GET("/:id", r.GetWebinarByID)
 	webinarpost.POST("/purchase/:id", r.middleware.Authenticate, r.Purchase)
