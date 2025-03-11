@@ -10,4 +10,5 @@ type Payment struct {
 	Price       uint64
 	FinalPrice  uint64
 	PaymentLink string
+	Status      string
 }
