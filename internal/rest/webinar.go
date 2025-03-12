@@ -2,6 +2,7 @@ package rest
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -35,7 +36,10 @@ func (r *Rest) CreateWebinar(ctx *gin.Context) {
 }
 
 func (r *Rest) GetWebinars(ctx *gin.Context) {
-	webinars, err := r.usecase.WebinarUsecase.GetWebinars()
+	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
+	size, _ := strconv.Atoi(ctx.DefaultQuery("size", "9"))
+
+	webinars, err := r.usecase.WebinarUsecase.GetWebinars(page, size)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": "failed to get webinars",

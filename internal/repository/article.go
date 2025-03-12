@@ -40,7 +40,7 @@ func (ar *ArticleRepository) GetArticles(page, size int) ([]models.GetArticles, 
 
 	offset := (page - 1) * size
 
-	err := ar.db.Table("articles").Order("Def_CreatedAt DESC").Limit(size).Offset(offset).Find(&articles).Error
+	err := ar.db.Table("articles").Order("def_created_at DESC").Limit(size).Offset(offset).Find(&articles).Error
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +64,7 @@ func (ar *ArticleRepository) GetArticlesBySearch(param models.GetArticles, page,
 
 	offset := (page - 1) * size
 
-	err := ar.db.Table("articles").Order("Def_CreatedAt DESC").Limit(size).Offset(offset).Where("title ILIKE ?", fmt.Sprintf("%%%s%%", param.Title)).Find(&articles).Error
+	err := ar.db.Table("articles").Order("def_created_at DESC").Limit(size).Offset(offset).Where("title ILIKE ?", fmt.Sprintf("%%%s%%", param.Title)).Find(&articles).Error
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +76,7 @@ func (ar *ArticleRepository) GetArticleByFilter(param models.GetArticles, page, 
 
 	offset := (page - 1) * size
 
-	err := ar.db.Model(entity.Article{}).Order("Def_CreatedAt DESC").Limit(size).Offset(offset).Where("filter = ?", param.Filter).Find(&articles).Error
+	err := ar.db.Model(entity.Article{}).Order("def_created_at DESC").Limit(size).Offset(offset).Where("filter = ?", param.Filter).Find(&articles).Error
 	if err != nil {
 		return nil, err
 	}

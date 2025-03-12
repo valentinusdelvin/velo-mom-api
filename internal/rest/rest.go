@@ -49,12 +49,14 @@ func (r *Rest) FinalCheck() {
 	articlepost.GET("/", r.GetArticles)
 	articlepost.GET("/:id", r.GetArticleByID)
 	articlepost.GET("/search", r.GetArticlesBySearch)
+	articlepost.GET("/filters", r.GetArticleByFilter)
 
 	videopost := routerGroup.Group("/videos")
 	videopost.POST("/", r.middleware.Authenticate, r.middleware.Authorization, r.CreateVideo)
 	videopost.GET("/", r.GetVideos)
 	videopost.GET("/:id", r.GetVideoByID)
 	videopost.GET("/search", r.GetVideosBySearch)
+	videopost.GET("/filters", r.GetVideoByFilter)
 
 	journalpost := routerGroup.Group("/journals")
 	journalpost.POST("/", r.middleware.Authenticate, r.CreateJournal)

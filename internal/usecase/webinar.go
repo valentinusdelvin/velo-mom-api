@@ -16,7 +16,7 @@ import (
 
 type InterWebinarUsecase interface {
 	CreateWebinar(param models.CreateWebinar) error
-	GetWebinars() ([]models.GetWebinars, error)
+	GetWebinars(page, size int) ([]models.GetWebinars, error)
 	GetWebinarByID(id string) (entity.Webinar, error)
 	GetPurchasedWebinars(userID uuid.UUID) ([]entity.Webinar, error)
 }
@@ -58,6 +58,7 @@ func (w *WebinarUsecase) CreateWebinar(param models.CreateWebinar) error {
 		StrDate:     timeconvert.TimeConvert(param.EventDate),
 		EventTime:   param.EventTime,
 		Location:    param.Location,
+		CreatedAt:   time.Now(),
 	}
 
 	_, err = w.wrsc.CreateWebinar(webinarPost)
@@ -67,8 +68,8 @@ func (w *WebinarUsecase) CreateWebinar(param models.CreateWebinar) error {
 	return nil
 }
 
-func (w *WebinarUsecase) GetWebinars() ([]models.GetWebinars, error) {
-	webinars, err := w.wrsc.GetWebinars()
+func (w *WebinarUsecase) GetWebinars(page, size int) ([]models.GetWebinars, error) {
+	webinars, err := w.wrsc.GetWebinars(page, size)
 	if err != nil {
 		return nil, err
 	}

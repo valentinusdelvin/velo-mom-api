@@ -35,6 +35,7 @@ func (v *VideoUsecase) CreateVideo(param models.CreateVideo) error {
 		YoutubeID:   vidID,
 		Thumbnail:   thumbnailIMG,
 		Description: param.Description,
+		Filter:      entity.Filter(param.Filter),
 	}
 	_, err := v.vrsc.CreateVideo(videoPost)
 	if err != nil {

@@ -56,6 +56,7 @@ func (a *ArticleUsecase) CreateArticle(param models.CreateArticle) error {
 		ImageURL:      newPhotoLink,
 		Def_CreatedAt: time.Now(),
 		CreatedAt:     addition.TimeConvert(time.Now()),
+		Filter:        entity.Filter(param.Filter),
 	}
 
 	_, err = a.arsc.CreateArticle(articlePost)
