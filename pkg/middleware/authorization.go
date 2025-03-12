@@ -7,16 +7,16 @@ import (
 )
 
 func (m *Middleware) Authorization(c *gin.Context) {
-	IsAdmin, exists := c.Get("isAdmin")
+	isAdmin, exists := c.Get("isAdmin")
 	if !exists {
-		c.JSON(http.StatusNotFound, gin.H{
+		c.JSON(http.StatusUnauthorized, gin.H{
 			"message": "Can't find the user's role",
 		})
 		c.Abort()
 		return
 	}
 
-	admin, ok := IsAdmin.(bool)
+	admin, ok := isAdmin.(bool)
 	if !ok || !admin {
 		c.JSON(http.StatusForbidden, gin.H{
 			"message": "forbidden",

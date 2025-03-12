@@ -18,6 +18,7 @@ type InterWebinarUsecase interface {
 	CreateWebinar(param models.CreateWebinar) error
 	GetWebinars() ([]models.GetWebinars, error)
 	GetWebinarByID(id string) (entity.Webinar, error)
+	GetPurchasedWebinars(userID uuid.UUID) ([]entity.Webinar, error)
 }
 
 type WebinarUsecase struct {
@@ -80,4 +81,8 @@ func (w *WebinarUsecase) GetWebinarByID(id string) (entity.Webinar, error) {
 		return entity.Webinar{}, err
 	}
 	return webinar, nil
+}
+
+func (w *WebinarUsecase) GetPurchasedWebinars(userID uuid.UUID) ([]entity.Webinar, error) {
+	return w.wrsc.GetPurchasedWebinars(userID)
 }

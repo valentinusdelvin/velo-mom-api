@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"github.com/google/uuid"
 	"github.com/valentinusdelvin/velo-mom-api/models"
 )
 
@@ -59,4 +60,28 @@ func (r *Rest) GetWebinarByID(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, webinar)
+}
+
+func (r *Rest) GetPurchasedWebinars(ctx *gin.Context) {
+	user, authorized := ctx.Get("userID")
+	if !authorized {
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"error": "unauthorized",
+		})
+		return
+	}
+
+	userID, ok := user.(uuid.UUID)
+	if !ok {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "invalid user id"})
+		return
+	}
+
+	webinars, err := r.usecase.WebinarUsecase.GetPurchasedWebinars(userID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, webinars)
 }

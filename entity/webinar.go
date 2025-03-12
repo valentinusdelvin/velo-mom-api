@@ -19,4 +19,6 @@ type Webinar struct {
 	EventTime   string `gorm:"not null"`
 	Location    string `gorm:"not null"`
 	IsBought    bool   `gorm:"default:false"`
+
+	WebinarAttendees []WebinarAttendee `gorm:"foreignKey:WebinarID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
 }

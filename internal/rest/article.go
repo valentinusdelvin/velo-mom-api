@@ -63,3 +63,53 @@ func (r *Rest) GetArticleByID(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, article)
 }
+
+func (r *Rest) GetArticlesBySearch(ctx *gin.Context) {
+	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
+	size, _ := strconv.Atoi(ctx.DefaultQuery("size", "9"))
+
+	keyword := ctx.Query("keyword")
+	if keyword == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "bad keyword"})
+		return
+	}
+
+	param := models.GetArticles{
+		Title: keyword,
+	}
+	articles, err := r.usecase.ArticleUsecase.GetArticlesBySearch(param, page, size)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to get articles"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"articles": articles})
+
+}
+
+func (r *Rest) GetArticleByFilter(ctx *gin.Context) {
+	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
+	size, _ := strconv.Atoi(ctx.DefaultQuery("size", "9"))
+
+	category := ctx.Query("category")
+	if category == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "bad category"})
+		return
+	}
+
+	int_category, err := ConvertInt(category)
+	if err != nil {
+		return
+	}
+
+	param := models.GetArticles{
+		Filter: models.Filter(int_category),
+	}
+	articles, err := r.usecase.ArticleUsecase.GetArticleByFilter(param, page, size)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to get articles"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"articles": articles})
+}

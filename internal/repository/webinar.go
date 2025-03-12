@@ -15,6 +15,7 @@ type InterWebinarRepository interface {
 	GetWebinarByID(id string) (entity.Webinar, error)
 	CreateWebinarAttendee(tx *gorm.DB, attendee entity.WebinarAttendee) error
 	UpdateWebinarInfo(tx *gorm.DB, webinarID uuid.UUID) error
+	GetPurchasedWebinars(userID uuid.UUID) ([]entity.Webinar, error)
 }
 
 type WebinarRepository struct {
@@ -38,7 +39,7 @@ func (wr *WebinarRepository) CreateWebinar(webinar entity.Webinar) (entity.Webin
 func (wr *WebinarRepository) GetWebinars() ([]models.GetWebinars, error) {
 	var webinars []models.GetWebinars
 
-	err := wr.db.Table("webinars").Find(&webinars).Error
+	err := wr.db.Model(entity.Webinar{}).Find(&webinars).Error
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +50,7 @@ func (wr *WebinarRepository) GetWebinars() ([]models.GetWebinars, error) {
 func (wr *WebinarRepository) GetWebinarByID(id string) (entity.Webinar, error) {
 	var webinar entity.Webinar
 
-	err := wr.db.Table("webinars").Where("id = ?", id).Find(&webinar).Error
+	err := wr.db.Model(entity.Webinar{}).Where("id = ?", id).Find(&webinar).Error
 	if err != nil {
 		return webinar, err
 	}
@@ -65,7 +66,21 @@ func (wr *WebinarRepository) UpdateWebinarInfo(tx *gorm.DB, webinarID uuid.UUID)
 	return tx.Model(&entity.Webinar{}).
 		Where("id = ? AND quota > 0", webinarID).
 		Updates(map[string]interface{}{
-			"quota":     gorm.Expr("quota - 1"),
-			"is_bought": true,
+			"quota": gorm.Expr("quota - 1"),
 		}).Error
+}
+
+func (wr *WebinarRepository) GetPurchasedWebinars(userID uuid.UUID) ([]entity.Webinar, error) {
+	var webinars []entity.Webinar
+
+	err := wr.db.
+		Joins("JOIN webinar_attendees ON webinar_attendees.webinar_id = webinars.id").
+		Where("webinar_attendees.user_id = ?", userID).
+		Find(&webinars).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return webinars, nil
 }
