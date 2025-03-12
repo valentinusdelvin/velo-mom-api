@@ -63,3 +63,56 @@ func (r *Rest) GetVideoByID(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, video)
 }
+
+func (r *Rest) GetVideosBySearch(ctx *gin.Context) {
+	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
+	size, _ := strconv.Atoi(ctx.DefaultQuery("size", "9"))
+
+	keyword := ctx.Query("keyword")
+	if keyword == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "bad keyword"})
+		return
+	}
+
+	param := models.CreateVideo{
+		Title: keyword,
+	}
+	videos, err := r.usecase.VideoUsecase.GetVideosBySearch(param, page, size)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to get videos"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"videos": videos})
+}
+
+func ConvertInt(s string) (int, error) {
+	return strconv.Atoi(s)
+}
+
+func (r *Rest) GetVideoByFilter(ctx *gin.Context) {
+	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
+	size, _ := strconv.Atoi(ctx.DefaultQuery("size", "9"))
+
+	category := ctx.Query("category")
+	if category == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "bad category"})
+		return
+	}
+
+	int_category, err := ConvertInt(category)
+	if err != nil {
+		return
+	}
+
+	param := models.CreateVideo{
+		Filter: models.Filter(int_category),
+	}
+	videos, err := r.usecase.VideoUsecase.GetVideoByFilter(param, page, size)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "failed to get videos"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"videos": videos})
+}

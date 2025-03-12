@@ -2,9 +2,11 @@ package rest
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"github.com/google/uuid"
 	"github.com/valentinusdelvin/velo-mom-api/models"
 )
 
@@ -34,7 +36,10 @@ func (r *Rest) CreateWebinar(ctx *gin.Context) {
 }
 
 func (r *Rest) GetWebinars(ctx *gin.Context) {
-	webinars, err := r.usecase.WebinarUsecase.GetWebinars()
+	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
+	size, _ := strconv.Atoi(ctx.DefaultQuery("size", "9"))
+
+	webinars, err := r.usecase.WebinarUsecase.GetWebinars(page, size)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"message": "failed to get webinars",
@@ -59,4 +64,28 @@ func (r *Rest) GetWebinarByID(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, webinar)
+}
+
+func (r *Rest) GetPurchasedWebinars(ctx *gin.Context) {
+	user, authorized := ctx.Get("userID")
+	if !authorized {
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"error": "unauthorized",
+		})
+		return
+	}
+
+	userID, ok := user.(uuid.UUID)
+	if !ok {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "invalid user id"})
+		return
+	}
+
+	webinars, err := r.usecase.WebinarUsecase.GetPurchasedWebinars(userID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, webinars)
 }

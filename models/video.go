@@ -6,4 +6,5 @@ type CreateVideo struct {
 	YoutubeURL  string `json:"videoURL" binding:"required"`
 	Description string `json:"description" binding:"required"`
 	Thumbnail   string `json:"thumbnail"`
+	Filter      Filter `json:"filter"`
 }

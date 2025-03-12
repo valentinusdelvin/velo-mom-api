@@ -11,6 +11,8 @@ type InterVideoUsecase interface {
 	CreateVideo(param models.CreateVideo) error
 	GetVideos(page, size int) ([]models.CreateVideo, error)
 	GetVideoByID(id string) (entity.Video, error)
+	GetVideosBySearch(param models.CreateVideo, page, size int) ([]entity.Video, error)
+	GetVideoByFilter(param models.CreateVideo, page, size int) ([]entity.Video, error)
 }
 
 type VideoUsecase struct {
@@ -33,6 +35,7 @@ func (v *VideoUsecase) CreateVideo(param models.CreateVideo) error {
 		YoutubeID:   vidID,
 		Thumbnail:   thumbnailIMG,
 		Description: param.Description,
+		Filter:      entity.Filter(param.Filter),
 	}
 	_, err := v.vrsc.CreateVideo(videoPost)
 	if err != nil {
@@ -55,4 +58,20 @@ func (v *VideoUsecase) GetVideoByID(id string) (entity.Video, error) {
 		return entity.Video{}, err
 	}
 	return video, nil
+}
+
+func (v *VideoUsecase) GetVideosBySearch(param models.CreateVideo, page, size int) ([]entity.Video, error) {
+	videos, err := v.vrsc.GetVideosBySearch(param, page, size)
+	if err != nil {
+		return nil, err
+	}
+	return videos, nil
+}
+
+func (v *VideoUsecase) GetVideoByFilter(param models.CreateVideo, page, size int) ([]entity.Video, error) {
+	videos, err := v.vrsc.GetVideoByFilter(param, page, size)
+	if err != nil {
+		return nil, err
+	}
+	return videos, nil
 }

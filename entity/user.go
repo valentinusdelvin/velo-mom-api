@@ -15,4 +15,6 @@ type User struct {
 	PhoneNumber string
 	Bio         string
 	IsAdmin     bool
+
+	WebinarAttendees []WebinarAttendee `gorm:"foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
 }

@@ -6,6 +6,19 @@ import (
 	"github.com/google/uuid"
 )
 
+type Filter int
+
+const (
+	BabyBlues         Filter = 1
+	SelfCare          Filter = 2
+	KesehatanMental   Filter = 3
+	Journaling        Filter = 4
+	DukunganEmosional Filter = 5
+	Keseharian        Filter = 6
+	TipsRelaksasi     Filter = 7
+	Parenting         Filter = 8
+)
+
 type CreateArticle struct {
 	ID        uuid.UUID             `json:"id"`
 	Title     string                `form:"title" binding:"required,min=3"`
@@ -15,6 +28,7 @@ type CreateArticle struct {
 	ImageURL  string                `form:"imageURL"`
 	PhotoIMG  *multipart.FileHeader `form:"photo" binding:"required"`
 	CreatedAt string                `json:"createdAt"`
+	Filter    Filter                `form:"filter"`
 }
 
 type GetArticles struct {
@@ -23,4 +37,5 @@ type GetArticles struct {
 	Summary   string    `json:"summary"`
 	CreatedAt string    `json:"createdAt"`
 	ImageURL  string    `json:"imageURL"`
+	Filter    Filter    `json:"filter"`
 }

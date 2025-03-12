@@ -18,6 +18,8 @@ type InterArticleUsecase interface {
 	CreateArticle(param models.CreateArticle) error
 	GetArticles(page, size int) ([]models.GetArticles, error)
 	GetArticleByID(id string) (entity.Article, error)
+	GetArticlesBySearch(param models.GetArticles, page, size int) ([]models.GetArticles, error)
+	GetArticleByFilter(param models.GetArticles, page, size int) ([]models.GetArticles, error)
 }
 
 type ArticleUsecase struct {
@@ -54,6 +56,7 @@ func (a *ArticleUsecase) CreateArticle(param models.CreateArticle) error {
 		ImageURL:      newPhotoLink,
 		Def_CreatedAt: time.Now(),
 		CreatedAt:     addition.TimeConvert(time.Now()),
+		Filter:        entity.Filter(param.Filter),
 	}
 
 	_, err = a.arsc.CreateArticle(articlePost)
@@ -77,4 +80,20 @@ func (a *ArticleUsecase) GetArticleByID(id string) (entity.Article, error) {
 		return entity.Article{}, err
 	}
 	return article, nil
+}
+
+func (a *ArticleUsecase) GetArticlesBySearch(param models.GetArticles, page, size int) ([]models.GetArticles, error) {
+	articles, err := a.arsc.GetArticlesBySearch(param, page, size)
+	if err != nil {
+		return nil, err
+	}
+	return articles, nil
+}
+
+func (a *ArticleUsecase) GetArticleByFilter(param models.GetArticles, page, size int) ([]models.GetArticles, error) {
+	articles, err := a.arsc.GetArticleByFilter(param, page, size)
+	if err != nil {
+		return nil, err
+	}
+	return articles, nil
 }

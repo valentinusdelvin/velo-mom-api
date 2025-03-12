@@ -9,4 +9,5 @@ type Video struct {
 	Description string
 	Thumbnail   string
 	CreatedAt   time.Time `gorm:"autoCreateTime"`
+	Filter      Filter    `gorm:"filter"`
 }
