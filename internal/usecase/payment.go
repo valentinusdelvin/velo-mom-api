@@ -21,10 +21,11 @@ type PaymentUsecase struct {
 	db   *gorm.DB
 }
 
-func NewPaymentUsecase(paymentRepo repository.InterPaymentRepository, webinarRepo repository.InterWebinarRepository) InterPaymentUsecase {
+func NewPaymentUsecase(paymentRepo repository.InterPaymentRepository, webinarRepo repository.InterWebinarRepository, db *gorm.DB) InterPaymentUsecase {
 	return &PaymentUsecase{
 		prsc: paymentRepo,
 		wrsc: webinarRepo,
+		db:   db,
 	}
 }
 

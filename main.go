@@ -29,6 +29,7 @@ func main() {
 		Bcrypt:     &bcrypt,
 		JWT:        &jwt,
 		Supabase:   &supabase,
+		DB:         db,
 	})
 	middleware := middleware.Init(usecase)
 
