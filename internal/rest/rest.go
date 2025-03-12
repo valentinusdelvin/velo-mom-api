@@ -45,13 +45,13 @@ func (r *Rest) FinalCheck() {
 	routerGroup.PATCH("/update-photo", r.middleware.Authenticate, r.UpdateProfilePhoto)
 
 	articlepost := routerGroup.Group("/articles")
-	articlepost.POST("/", r.middleware.Authorization, r.CreateArticle)
+	articlepost.POST("/", r.middleware.Authenticate, r.middleware.Authorization, r.CreateArticle)
 	articlepost.GET("/", r.GetArticles)
 	articlepost.GET("/:id", r.GetArticleByID)
 	articlepost.GET("/search", r.GetArticlesBySearch)
 
 	videopost := routerGroup.Group("/videos")
-	videopost.POST("/", r.middleware.Authorization, r.CreateVideo)
+	videopost.POST("/", r.middleware.Authenticate, r.middleware.Authorization, r.CreateVideo)
 	videopost.GET("/", r.GetVideos)
 	videopost.GET("/:id", r.GetVideoByID)
 	videopost.GET("/search", r.GetVideosBySearch)
@@ -62,7 +62,7 @@ func (r *Rest) FinalCheck() {
 	journalpost.GET("/me/:id", r.middleware.Authenticate, r.GetUserJournalByID)
 
 	webinarpost := routerGroup.Group("/webinars")
-	webinarpost.POST("/", r.middleware.Authorization, r.CreateWebinar)
+	webinarpost.POST("/", r.middleware.Authenticate, r.middleware.Authorization, r.CreateWebinar)
 	webinarpost.GET("/", r.GetWebinars)
 	webinarpost.GET("/:id", r.GetWebinarByID)
 	webinarpost.GET("/my-webinars", r.middleware.Authenticate, r.GetPurchasedWebinars)
