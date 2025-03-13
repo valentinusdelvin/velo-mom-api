@@ -40,7 +40,7 @@ func (ar *ArticleRepository) GetArticles(page, size int) ([]models.GetArticles, 
 
 	offset := (page - 1) * size
 
-	err := ar.db.Table("articles").Order("def_created_at DESC").Limit(size).Offset(offset).Find(&articles).Error
+	err := ar.db.Model(entity.Article{}).Order("def_created_at DESC").Limit(size).Offset(offset).Find(&articles).Error
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func (ar *ArticleRepository) GetArticles(page, size int) ([]models.GetArticles, 
 func (ar *ArticleRepository) GetArticleByID(id string) (entity.Article, error) {
 	var article entity.Article
 
-	err := ar.db.Table("articles").Where("id = ?", id).Find(&article).Error
+	err := ar.db.Model(entity.Article{}).Where("id = ?", id).Find(&article).Error
 	if err != nil {
 		return article, err
 	}
@@ -64,7 +64,7 @@ func (ar *ArticleRepository) GetArticlesBySearch(param models.GetArticles, page,
 
 	offset := (page - 1) * size
 
-	err := ar.db.Table("articles").Order("def_created_at DESC").Limit(size).Offset(offset).Where("title ILIKE ?", fmt.Sprintf("%%%s%%", param.Title)).Find(&articles).Error
+	err := ar.db.Model(entity.Article{}).Order("def_created_at DESC").Limit(size).Offset(offset).Where("title ILIKE ?", fmt.Sprintf("%%%s%%", param.Title)).Find(&articles).Error
 	if err != nil {
 		return nil, err
 	}
