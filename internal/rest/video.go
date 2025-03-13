@@ -94,13 +94,13 @@ func (r *Rest) GetVideoByFilter(ctx *gin.Context) {
 	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
 	size, _ := strconv.Atoi(ctx.DefaultQuery("size", "9"))
 
-	category := ctx.Query("category")
-	if category == "" {
+	filter := ctx.Query("filter")
+	if filter == "" {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "bad category"})
 		return
 	}
 
-	int_category, err := ConvertInt(category)
+	int_category, err := ConvertInt(filter)
 	if err != nil {
 		return
 	}
