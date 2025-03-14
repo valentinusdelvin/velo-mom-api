@@ -36,7 +36,7 @@ func (vr *VideoRepository) CreateVideo(video entity.Video) (entity.Video, error)
 }
 
 func (vr *VideoRepository) DeleteVideo(id string) error {
-	return vr.db.Where("id = ?", id).Delete(&entity.Video{}).Error
+	return vr.db.Where("youtube_id = ?", id).Delete(&entity.Video{}).Error
 }
 
 func (vr *VideoRepository) GetVideos(page, size int) ([]models.CreateVideo, error) {
