@@ -51,7 +51,7 @@ func (wr *WebinarRepository) GetWebinars(page, size int) ([]models.GetWebinars, 
 func (wr *WebinarRepository) GetWebinarByID(id string) (entity.Webinar, error) {
 	var webinar entity.Webinar
 
-	err := wr.db.Model(entity.Webinar{}).Where("id = ?", id).Find(&webinar).Error
+	err := wr.db.Model(entity.Webinar{}).Omit("WebinarAttendees").Where("id = ?", id).Find(&webinar).Error
 	if err != nil {
 		return webinar, err
 	}
