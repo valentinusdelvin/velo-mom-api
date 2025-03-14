@@ -45,6 +45,7 @@ func (r *Rest) FinalCheck() {
 
 	articlepost := routerGroup.Group("/articles")
 	articlepost.POST("/", r.middleware.Authenticate, r.middleware.Authorization, r.CreateArticle)
+	articlepost.DELETE("/:id", r.middleware.Authenticate, r.middleware.Authorization, r.DeleteArticle)
 	articlepost.GET("/", r.GetArticles)
 	articlepost.GET("/:id", r.GetArticleByID)
 	articlepost.GET("/search", r.GetArticlesBySearch)
@@ -52,6 +53,7 @@ func (r *Rest) FinalCheck() {
 
 	videopost := routerGroup.Group("/videos")
 	videopost.POST("/", r.middleware.Authenticate, r.middleware.Authorization, r.CreateVideo)
+	videopost.DELETE("/:id", r.middleware.Authenticate, r.middleware.Authorization, r.DeleteVideo)
 	videopost.GET("/", r.GetVideos)
 	videopost.GET("/:id", r.GetVideoByID)
 	videopost.GET("/search", r.GetVideosBySearch)
@@ -64,6 +66,7 @@ func (r *Rest) FinalCheck() {
 
 	webinarpost := routerGroup.Group("/webinars")
 	webinarpost.POST("/", r.middleware.Authenticate, r.middleware.Authorization, r.CreateWebinar)
+	webinarpost.DELETE("/:id", r.middleware.Authenticate, r.middleware.Authorization, r.DeleteWebinar)
 	webinarpost.GET("/", r.GetWebinars)
 	webinarpost.GET("/:id", r.GetWebinarByID)
 	webinarpost.GET("/my-webinars", r.middleware.Authenticate, r.GetPurchasedWebinars)

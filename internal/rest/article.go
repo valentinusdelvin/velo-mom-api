@@ -34,6 +34,18 @@ func (r *Rest) CreateArticle(ctx *gin.Context) {
 		"message": "success to create article"})
 }
 
+func (r *Rest) DeleteArticle(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	err := r.usecase.ArticleUsecase.DeleteArticle(id)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "article deleted successfully"})
+}
+
 func (r *Rest) GetArticles(ctx *gin.Context) {
 	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
 	size, _ := strconv.Atoi(ctx.DefaultQuery("size", "9"))

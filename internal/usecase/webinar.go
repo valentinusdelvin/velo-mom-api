@@ -16,6 +16,7 @@ import (
 
 type InterWebinarUsecase interface {
 	CreateWebinar(param models.CreateWebinar) error
+	DeleteWebinar(id string) error
 	GetWebinars(page, size int) ([]models.GetWebinars, error)
 	GetWebinarByID(id string) (entity.Webinar, error)
 	GetPurchasedWebinars(userID uuid.UUID) ([]entity.Webinar, error)
@@ -66,6 +67,10 @@ func (w *WebinarUsecase) CreateWebinar(param models.CreateWebinar) error {
 		return errors.New("failed to create webinar: " + err.Error())
 	}
 	return nil
+}
+
+func (w *WebinarUsecase) DeleteWebinar(id string) error {
+	return w.wrsc.DeleteWebinar(id)
 }
 
 func (w *WebinarUsecase) GetWebinars(page, size int) ([]models.GetWebinars, error) {

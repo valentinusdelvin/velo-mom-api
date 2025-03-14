@@ -10,6 +10,7 @@ import (
 
 type InterArticleRepository interface {
 	CreateArticle(article entity.Article) (entity.Article, error)
+	DeleteArticle(id string) error
 	GetArticles(page, size int) ([]models.GetArticles, error)
 	GetArticleByID(id string) (entity.Article, error)
 	GetArticlesBySearch(param models.GetArticles, page, size int) ([]models.GetArticles, error)
@@ -46,6 +47,10 @@ func (ar *ArticleRepository) GetArticles(page, size int) ([]models.GetArticles, 
 	}
 
 	return articles, nil
+}
+
+func (ar *ArticleRepository) DeleteArticle(id string) error {
+	return ar.db.Where("id = ?", id).Delete(&entity.Article{}).Error
 }
 
 func (ar *ArticleRepository) GetArticleByID(id string) (entity.Article, error) {

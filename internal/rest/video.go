@@ -33,6 +33,18 @@ func (r *Rest) CreateVideo(ctx *gin.Context) {
 		"message": "success to create video"})
 }
 
+func (r *Rest) DeleteVideo(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	err := r.usecase.VideoUsecase.DeleteVideo(id)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "video deleted successfully"})
+}
+
 func (r *Rest) GetVideos(ctx *gin.Context) {
 	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
 	size, _ := strconv.Atoi(ctx.DefaultQuery("size", "9"))

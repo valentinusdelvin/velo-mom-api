@@ -10,6 +10,7 @@ import (
 
 type InterVideoRepository interface {
 	CreateVideo(video entity.Video) (entity.Video, error)
+	DeleteVideo(id string) error
 	GetVideos(page, size int) ([]models.CreateVideo, error)
 	GetVideoByID(id string) (entity.Video, error)
 	GetVideosBySearch(param models.CreateVideo, page, size int) ([]entity.Video, error)
@@ -32,6 +33,10 @@ func (vr *VideoRepository) CreateVideo(video entity.Video) (entity.Video, error)
 		return video, err
 	}
 	return video, nil
+}
+
+func (vr *VideoRepository) DeleteVideo(id string) error {
+	return vr.db.Where("id = ?", id).Delete(&entity.Video{}).Error
 }
 
 func (vr *VideoRepository) GetVideos(page, size int) ([]models.CreateVideo, error) {

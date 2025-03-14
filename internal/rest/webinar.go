@@ -35,6 +35,18 @@ func (r *Rest) CreateWebinar(ctx *gin.Context) {
 		"message": "success to create webinar"})
 }
 
+func (r *Rest) DeleteWebinar(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	err := r.usecase.WebinarUsecase.DeleteWebinar(id)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "webinar deleted successfully"})
+}
+
 func (r *Rest) GetWebinars(ctx *gin.Context) {
 	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
 	size, _ := strconv.Atoi(ctx.DefaultQuery("size", "9"))
