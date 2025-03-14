@@ -19,14 +19,6 @@ type Rest struct {
 func NewRest(usecase *usecase.Usecase, middleware middleware.Interface) *Rest {
 	router := gin.Default()
 
-	router.Use(func(c *gin.Context) {
-		if c.Request.Method == "OPTIONS" {
-			c.AbortWithStatus(204)
-			return
-		}
-		c.Next()
-	})
-
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"*"},
@@ -34,6 +26,14 @@ func NewRest(usecase *usecase.Usecase, middleware middleware.Interface) *Rest {
 		AllowCredentials: false,
 		MaxAge:           12 * time.Hour,
 	}))
+
+	router.Use(func(c *gin.Context) {
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+		c.Next()
+	})
 	return &Rest{
 		router:     router,
 		usecase:    usecase,
