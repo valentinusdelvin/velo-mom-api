@@ -26,6 +26,7 @@ type GetWebinars struct {
 	WebinarName string    `json:"name"`
 	Subheader   string    `json:"subheader"`
 	Price       uint64    `json:"price"`
+	Quota       uint64    `json:"quota"`
 	StrDate     string    `json:"date"`
 	EventTime   string    `json:"time"`
 	Location    string    `json:"location"`
