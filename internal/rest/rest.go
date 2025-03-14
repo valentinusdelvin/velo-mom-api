@@ -28,7 +28,7 @@ func NewRest(usecase *usecase.Usecase, middleware middleware.Interface) *Rest {
 	})
 
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
+		AllowOrigins:     []string{"http://localhost:5173"},
 		AllowMethods:     []string{"*"},
 		AllowHeaders:     []string{"*"},
 		ExposeHeaders:    []string{"Content-Length"},
