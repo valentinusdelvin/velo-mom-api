@@ -11,6 +11,7 @@ import (
 
 type InterWebinarRepository interface {
 	CreateWebinar(Webinar entity.Webinar) (entity.Webinar, error)
+	DeleteWebinar(id string) error
 	GetWebinars(page, size int) ([]models.GetWebinars, error)
 	GetWebinarByID(id string) (entity.Webinar, error)
 	CreateWebinarAttendee(tx *gorm.DB, attendee entity.WebinarAttendee) error
@@ -34,6 +35,10 @@ func (wr *WebinarRepository) CreateWebinar(webinar entity.Webinar) (entity.Webin
 		return webinar, err
 	}
 	return webinar, nil
+}
+
+func (wr *WebinarRepository) DeleteWebinar(id string) error {
+	return wr.db.Where("id = ?", id).Delete(&entity.Webinar{}).Error
 }
 
 func (wr *WebinarRepository) GetWebinars(page, size int) ([]models.GetWebinars, error) {

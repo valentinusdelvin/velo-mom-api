@@ -16,6 +16,7 @@ import (
 
 type InterArticleUsecase interface {
 	CreateArticle(param models.CreateArticle) error
+	DeleteArticle(id string) error
 	GetArticles(page, size int) ([]models.GetArticles, error)
 	GetArticleByID(id string) (entity.Article, error)
 	GetArticlesBySearch(param models.GetArticles, page, size int) ([]models.GetArticles, error)
@@ -64,6 +65,10 @@ func (a *ArticleUsecase) CreateArticle(param models.CreateArticle) error {
 		return err
 	}
 	return nil
+}
+
+func (a *ArticleUsecase) DeleteArticle(id string) error {
+	return a.arsc.DeleteArticle(id)
 }
 
 func (a *ArticleUsecase) GetArticles(page, size int) ([]models.GetArticles, error) {

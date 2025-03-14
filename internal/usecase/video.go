@@ -9,6 +9,7 @@ import (
 
 type InterVideoUsecase interface {
 	CreateVideo(param models.CreateVideo) error
+	DeleteVideo(id string) error
 	GetVideos(page, size int) ([]models.CreateVideo, error)
 	GetVideoByID(id string) (entity.Video, error)
 	GetVideosBySearch(param models.CreateVideo, page, size int) ([]entity.Video, error)
@@ -42,6 +43,10 @@ func (v *VideoUsecase) CreateVideo(param models.CreateVideo) error {
 		return err
 	}
 	return nil
+}
+
+func (v *VideoUsecase) DeleteVideo(id string) error {
+	return v.vrsc.DeleteVideo(id)
 }
 
 func (v *VideoUsecase) GetVideos(page, size int) ([]models.CreateVideo, error) {
