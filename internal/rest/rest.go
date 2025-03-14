@@ -31,7 +31,6 @@ func NewRest(usecase *usecase.Usecase, middleware middleware.Interface) *Rest {
 		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"*"},
 		AllowHeaders:     []string{"*"},
-		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: false,
 		MaxAge:           12 * time.Hour,
 	}))
