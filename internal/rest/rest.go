@@ -28,7 +28,7 @@ func NewRest(usecase *usecase.Usecase, middleware middleware.Interface) *Rest {
 		MaxAge:           12 * time.Hour,
 	}))
 	return &Rest{
-		router:     gin.Default(),
+		router:     router,
 		usecase:    usecase,
 		middleware: middleware,
 	}
