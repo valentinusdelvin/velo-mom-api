@@ -79,37 +79,6 @@ func (r *Rest) Login(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, token)
 }
 
-func (r *Rest) AuthenticateEmail(ctx *gin.Context) {
-	param := models.EmailAuthenticator{}
-
-	err := ctx.ShouldBindJSON(&param)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"message": "failed to bind with JSON",
-			"error":   err,
-		})
-		return
-	}
-
-	_, err = r.usecase.UserUsecase.GetUser(models.UserParam{Email: param.Email})
-	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			ctx.JSON(http.StatusNotFound, gin.H{
-				"message": "user not found",
-				"error":   err,
-			})
-		} else {
-			ctx.JSON(http.StatusInternalServerError, gin.H{
-				"message": "failed to authenticate email",
-				"error":   err,
-			})
-		}
-		return
-	}
-
-	ctx.JSON(http.StatusOK, gin.H{})
-}
-
 func (r *Rest) GetUserInfo(ctx *gin.Context) {
 	user, ok := ctx.Get("userID")
 	if !ok {

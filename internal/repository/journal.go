@@ -35,7 +35,7 @@ func (jr *JournalRepository) GetUserJournals(userID uuid.UUID, page int, size in
 	var journals []models.CreateJournal
 	offset := (page - 1) * size
 
-	err := jr.db.Table("journals").Order("def_created_at DESC").Limit(size).Offset(offset).Where("user_id = ?", userID).Find(&journals).Error
+	err := jr.db.Model(entity.Journal{}).Order("def_created_at DESC").Limit(size).Offset(offset).Where("user_id = ?", userID).Find(&journals).Error
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (jr *JournalRepository) GetUserJournals(userID uuid.UUID, page int, size in
 func (jr *JournalRepository) GetUserJournalByID(userID uuid.UUID, id string) (entity.Journal, error) {
 	var journal entity.Journal
 
-	err := jr.db.Table("journals").Where("id = ?", id).Where("user_id = ?", userID).Find(&journal).Error
+	err := jr.db.Model(entity.Journal{}).Where("id = ?", id).Where("user_id = ?", userID).Find(&journal).Error
 	if err != nil {
 		return journal, err
 	}

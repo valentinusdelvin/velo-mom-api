@@ -39,6 +39,6 @@ func (pr *PaymentRepository) UpdatePaymentStatus(tx *gorm.DB, status string, ord
 
 func (pr *PaymentRepository) GetInvoice(orderID string) (models.Payment, error) {
 	var invoice models.Payment
-	err := pr.db.Table("payments").Where("order_id = ?", orderID).First(&invoice).Error
+	err := pr.db.Model(entity.Payment{}).Where("order_id = ?", orderID).First(&invoice).Error
 	return invoice, err
 }

@@ -40,7 +40,6 @@ func (r *Rest) FinalCheck() {
 	routerGroup.POST("/register", r.Register)
 	routerGroup.POST("/login", r.Login)
 	routerGroup.GET("/me", r.middleware.Authenticate, r.GetUserInfo)
-	routerGroup.POST("/auth-email", r.middleware.Authenticate, r.AuthenticateEmail)
 	routerGroup.PATCH("/update-user", r.middleware.Authenticate, r.UpdateUser)
 	routerGroup.PATCH("/update-photo", r.middleware.Authenticate, r.UpdateProfilePhoto)
 

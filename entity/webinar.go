@@ -18,8 +18,7 @@ type Webinar struct {
 	StrDate     string
 	EventTime   string `gorm:"not null"`
 	Location    string `gorm:"not null"`
-	IsBought    bool   `gorm:"default:false"`
 	CreatedAt   time.Time
 
-	WebinarAttendees []WebinarAttendee `gorm:"foreignKey:WebinarID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+	WebinarAttendees []WebinarAttendee `gorm:"foreignKey:WebinarID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"-"`
 }

@@ -5,6 +5,7 @@ import (
 	"github.com/valentinusdelvin/velo-mom-api/pkg/bcrypt"
 	"github.com/valentinusdelvin/velo-mom-api/pkg/jwt"
 	"github.com/valentinusdelvin/velo-mom-api/pkg/supabase"
+	"gorm.io/gorm"
 )
 
 type Usecase struct {
@@ -21,6 +22,7 @@ type InitializersParam struct {
 	Bcrypt     *bcrypt.InterBcrypt
 	JWT        *jwt.InterJWT
 	Supabase   *supabase.InterSupabase
+	DB         *gorm.DB
 }
 
 func NewUsecase(param InitializersParam) *Usecase {
@@ -29,7 +31,7 @@ func NewUsecase(param InitializersParam) *Usecase {
 	VideoUsecase := NewVideoUsecase(param.Repository.VideoRepository)
 	JournalUsecase := NewJournalUsecase(param.Repository.JournalRepository)
 	WebinarUsecase := NewWebinarUsecase(param.Repository.WebinarRepository, *param.Supabase)
-	PaymentUsecase := NewPaymentUsecase(param.Repository.PaymentRepository, param.Repository.WebinarRepository)
+	PaymentUsecase := NewPaymentUsecase(param.Repository.PaymentRepository, param.Repository.WebinarRepository, param.DB)
 
 	return &Usecase{
 		UserUsecase:    UserUsecase,
