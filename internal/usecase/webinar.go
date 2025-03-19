@@ -70,6 +70,16 @@ func (w *WebinarUsecase) CreateWebinar(param models.CreateWebinar) error {
 }
 
 func (w *WebinarUsecase) DeleteWebinar(id string) error {
+	webinar, err := w.wrsc.GetWebinarByID(id)
+	if err != nil {
+		return err
+	}
+
+	err = w.sb.Delete(webinar.Photolink)
+	if err != nil {
+		return err
+	}
+
 	return w.wrsc.DeleteWebinar(id)
 }
 

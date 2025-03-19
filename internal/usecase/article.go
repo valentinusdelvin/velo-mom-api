@@ -68,6 +68,14 @@ func (a *ArticleUsecase) CreateArticle(param models.CreateArticle) error {
 }
 
 func (a *ArticleUsecase) DeleteArticle(id string) error {
+	article, err := a.arsc.GetArticleByID(id)
+	if err != nil {
+		return err
+	}
+	err = a.sb.Delete(article.ImageURL)
+	if err != nil {
+		return err
+	}
 	return a.arsc.DeleteArticle(id)
 }
 
