@@ -65,7 +65,7 @@ func (p *PaymentUsecase) Purchase(payment entity.Payment) (string, error) {
 	*snapReq.Items = append(*snapReq.Items, ServiceFee)
 	payment.Price = uint64(snapReq.TransactionDetails.GrossAmt)
 
-	snapReq.TransactionDetails.GrossAmt += 2000
+	snapReq.TransactionDetails.GrossAmt += ServiceFee.Price
 	payment.FinalPrice = uint64(snapReq.TransactionDetails.GrossAmt)
 
 	paymentLink, paymentErr := snap.CreateTransactionUrl(snapReq)
