@@ -19,6 +19,14 @@ type Rest struct {
 func NewRest(usecase *usecase.Usecase, middleware middleware.Interface) *Rest {
 	router := gin.Default()
 
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:5173", "https://localhost:5173", "https://velomom-reynammars-projects.vercel.app"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
+
 	router.Use(func(c *gin.Context) {
 		if c.Request.Method == "OPTIONS" {
 			c.AbortWithStatus(204)
@@ -26,15 +34,6 @@ func NewRest(usecase *usecase.Usecase, middleware middleware.Interface) *Rest {
 		}
 		c.Next()
 	})
-
-	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
-		AllowMethods:     []string{"*"},
-		AllowHeaders:     []string{"*"},
-		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: false,
-		MaxAge:           12 * time.Hour,
-	}))
 	return &Rest{
 		router:     router,
 		usecase:    usecase,
