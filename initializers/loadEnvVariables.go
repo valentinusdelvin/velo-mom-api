@@ -1,6 +1,7 @@
 package initializers
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -8,6 +9,7 @@ import (
 )
 
 func LoadEnvVariables() {
+	fmt.Println("Running LoadEnvVariables, STAGE =", os.Getenv("STAGE"))
 	if os.Getenv("STAGE") == "PROD" {
 		return
 	}
